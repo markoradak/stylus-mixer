@@ -1,0 +1,48 @@
+/**
+ * Important (important.styl)
+ * --------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Adds '!important' argument to every
+ *         prop, if enabled.
+ */
+
+// important tag
+add-important()
+  !important in arguments ? unquote('') : !important
+
+// create a function
+-important()
+  prop = called-from
+  {prop} arguments add-important()
+
+// create list of all non vendor-prefixed props
+props = all, background, background-attachment, background-blend-mode, background-color, background-image, background-position, background-repeat, border, border-bottom, border-bottom-color, border-bottom-left-radius, border-bottom-right-radius, border-bottom-style, border-bottom-width, border-collapse, border-color, border-left, border-left-color, border-left-style, border-left-width, border-right, border-right-color, border-right-style, border-right-width, border-spacing, border-style, border-top, border-top-color, border-top-left-radius, border-top-right-radius, border-top-style, border-top-width, border-width, break-after, break-before, break-inside, caption-side, clear, clip, color, counter-increment, counter-reset, cursor, direction, display, empty-cells, float, font, font-family, font-size, font-size-adjust, font-stretch, font-style, font-synthesis, font-variant, font-weight, hanging-punctuation, height, isolation, letter-spacing, line-height, list-style, list-style-image, list-style-position, list-style-type, margin, margin-bottom, margin-left, margin-right, margin-top, mask-border, mask-border-mode, mask-border-outset, mask-border-repeat, mask-border-slice, mask-border-source, mask-border-width, mask-clip, mask-composite, mask-image, mask-mode, mask-origin, mask-position, mask-repeat, mask-size, mask-type, max-height, max-width, min-height, min-width, mix-blend-mode, object-fit, object-position, opacity, orphans, outline, outline-color, outline-offset, outline-style, outline-width, overflow, overflow-x, overflow-y, padding, padding-bottom, padding-left, padding-right, padding-top, page-break-after, page-break-before, page-break-inside, pointer-events, position, quotes, resize, shape-image-threshold, shape-margin, shape-outside, table-layout, text-align, text-align-last, text-decoration, text-decoration-color, text-decoration-line, text-decoration-style, text-indent, text-justify, text-rendering, text-shadow, text-transform, unicode-bidi, vertical-align, visibility, white-space, widows, width, will-change, word-break, word-spacing, word-wrap, z-index
+
+// kickoff if true
+if important-everything
+
+  // iterate regular
+  for prop in props
+    define( ''+prop, @() {
+      -important(arguments)
+    })
+
+  // iterate prefixed
+  for prop in support
+    define( ''+prop, @() {
+      -vendor(arguments add-important() )
+    })
+
+  // conflicting props
+  top()
+    top arguments add-important()
+
+  right()
+    right arguments add-important()
+
+  bottom()
+    bottom arguments add-important()
+
+  left()
+    left arguments add-important()

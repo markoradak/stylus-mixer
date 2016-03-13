@@ -1,0 +1,713 @@
+{
+
+  "animation" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-delay" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-direction" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-duration" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-fill-mode" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-iteration-count" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-name" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-play-state" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "animation-timing-function" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "43",
+    "safari"  : "9",
+    "opera-w" : "30",
+    "opera-o" : "0"
+  },
+
+  "appearance" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "backdrop-filter" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "sp",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "backface-visibility" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "0"
+  },
+
+  "background-clip" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "4",
+    "chrome"  : "4",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "11"
+  },
+
+  "background-origin" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "4",
+    "chrome"  : "4",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "11"
+  },
+
+  "background-size" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "4",
+    "chrome"  : "4",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "11"
+  },
+
+  "border-image-source" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-image-slice" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-image-width" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-image-outset" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-image-repeat" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-image" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "15",
+    "chrome"  : "16",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "border-radius" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "4",
+    "chrome"  : "5",
+    "safari"  : "5",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "box-shadow" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "4",
+    "chrome"  : "10",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "box-sizing" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "29",
+    "chrome"  : "10",
+    "safari"  : "6",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "clip-path" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "0",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-count" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-fill" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-gap" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-rule" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-rule-color" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-rule-style" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-rule-width" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "ccolumn-span" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "column-width" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "columns" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "9",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "cursor-zoom" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "24",
+    "chrome"  : "37",
+    "safari"  : "9",
+    "opera-w" : "24",
+    "opera-o" : "0"
+  },
+
+  "cursor-grab" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "27",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "filter" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "0",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "gradient" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "grid" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-area" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-auto-columns" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-auto-flow" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-auto-position" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-auto-rows" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-column" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-column-end" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-column-start" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-row" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-row-end" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-row-start" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-template" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-template-areas" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-template-columns" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "grid-template-rows" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "hyphens" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "43",
+    "chrome"  : "0",
+    "safari"  : "sp",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "mask" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "0",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  },
+
+  "perspective" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "0"
+  },
+
+  "perspective-origin" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "0"
+  },
+
+  "tab-size" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "15"
+  },
+
+  "text-overflow" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "0",
+    "chrome"  : "0",
+    "safari"  : "0",
+    "opera-w" : "0",
+    "opera-o" : "11"
+  },
+
+  "text-size-adjust" : {
+    "ie"      : "sp",
+    "edge"    : "0",
+    "firefox" : "sp",
+    "chrome"  : "0",
+    "safari"  : "sp",
+    "opera-w" : "0",
+    "opera-o" : "0"
+  },
+
+  "transform" : {
+    "ie"      : "10",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "12"
+  },
+
+  "transform-origin" : {
+    "ie"      : "10",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "12"
+  },
+
+  "transform-style" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "36",
+    "safari"  : "9",
+    "opera-w" : "23",
+    "opera-o" : "0"
+  },
+
+  "transition" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "transition-delay" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "transition-duration" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "transition-property" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "transition-timing-function" : {
+    "ie"      : "0",
+    "edge"    : "0",
+    "firefox" : "16",
+    "chrome"  : "26",
+    "safari"  : "7",
+    "opera-w" : "0",
+    "opera-o" : "12"
+  },
+
+  "user-select" : {
+    "ie"      : "sp",
+    "edge"    : "sp",
+    "firefox" : "sp",
+    "chrome"  : "sp",
+    "safari"  : "sp",
+    "opera-w" : "sp",
+    "opera-o" : "0"
+  }
+
+}

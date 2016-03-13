@@ -1,0 +1,54 @@
+/**
+ * Values (values.styl)
+ * --------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides autoprefixing mixins for all
+ *         values that need vendor prefixes.
+ *         Uses information from 'support.json'.
+ */
+
+// cursor
+cursor()
+
+  // print unprefixed
+  cursor arguments
+
+  // create string
+  args = create-string(arguments)
+
+  // zoom
+  if match('zoom?', args)
+
+    if prefix-webkit('cursor-zoom')
+      cursor create-val('-webkit-', args)
+
+    if prefix-moz('cursor-zoom')
+      cursor create-val('-moz-', args)
+
+    if prefix-ms('cursor-zoom')
+      cursor create-val('-ms-', args)
+
+    if prefix-o('cursor-zoom')
+      cursor create-val('-o-', args)
+
+    // fallback
+    cursor crosshair
+
+  // grab
+  if match('grab', args)
+
+    if prefix-webkit('cursor-grab')
+      cursor create-val('-webkit-', args)
+
+    if prefix-moz('cursor-grab')
+      cursor create-val('-moz-', args)
+
+    if prefix-ms('cursor-grab')
+      cursor create-val('-ms-', args)
+
+    if prefix-o('cursor-grab')
+      cursor create-val('-o-', args)
+
+    // fallback
+    cursor move

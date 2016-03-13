@@ -1,0 +1,52 @@
+/**
+ * Legacy Background (legacy-background.styl)
+ * ------------------------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides opaque background for legacy
+ *         browsers if background contains alpha.
+ */
+
+// initiate if ie 8 and below
+if legacySupport
+
+  -bg()
+
+    // iterate
+    for argument in arguments
+
+      // run if color with alpha
+      if (typeof(argument) is 'rgba' || typeof(argument) is 'hsla') && (alpha(argument) < 1)
+
+        // convert to argb
+        ms-color = argb(argument)
+
+        // set hex string
+        hex(argument)
+          hex-value = ('0') ('1') ('2') ('3') ('4') ('5') ('6') ('7') ('8') ('9') ('A') ('B') ('C') ('D') ('E') ('F')
+          unquote(hex-value[floor(argument / 16)] + hex-value[floor(argument % 16)])
+
+        // convert to 8-digit hex
+        argb(n)
+          unquote('#')                  +\
+          hex((alpha(argument)) * 255) +\
+          hex(red(argument))           +\
+          hex(green(argument))         +\
+          hex(blue(argument))
+
+        // set ms-filter
+        filter-source = s('progid:DXImageTransform.Microsoft.gradient(startColorstr=%s,endColorstr=%s)', ms-color, ms-color)
+        // print ms-filter
+        -ms-filter join('', filter-source)
+
+  // background
+  background()
+    background arguments
+    // alpha
+    -bg(arguments)
+
+  // background-color
+  background-color()
+    background-color arguments
+    // alpha
+    -bg(arguments)

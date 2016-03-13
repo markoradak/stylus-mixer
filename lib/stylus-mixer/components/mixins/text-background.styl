@@ -1,0 +1,28 @@
+/**
+ * Text Background (text-background.styl)
+ * --------------------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides text-background mixin.
+ *         Supports webkit only, using '@support'
+ *         rule.
+ *
+ * @syntax
+ *   text-background <options>
+ *
+ * @examples
+ *   text-background url(image.jpg) cover
+ *   text-background url(pattern.png) repeat-y
+ */
+
+text-background()
+
+  // print @support rule
+  @supports (-webkit-background-clip: text)
+
+    // print out standard syntax
+    background arguments
+
+    // print remaining props
+    -webkit-background-clip text
+    -webkit-text-fill-color transparent

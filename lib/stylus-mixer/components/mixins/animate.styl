@@ -1,0 +1,165 @@
+/**
+ * Animate (animate.styl)
+ * ----------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides quick, short-hand like syntax
+ *         for animations and keyframes.
+ *
+ * @syntax
+ *   animate <options>, <keyframe> ...
+ *
+ * @examples
+ *   animate easeOutExpo forwards, translateY(50%)
+ *
+ *   animate \
+ *     name 2000ms infinite easeInOut(50%), \
+ *     10% scale(1.5) opacity(1), \
+ *     70% scale(0.5) opacity(0.5)
+ */
+
+animate(options, keyframes...)
+
+  // parse options value
+  optionsCheck = join(', ', options)
+
+  // check if options have custom name set
+  if (
+    match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+  )
+    customNameAvailable = false
+
+  else
+    customNameAvailable = true
+
+  // set name
+
+  // use from options if available
+  if (customNameAvailable == true)
+    name = options[0]
+
+  // otherwise - create from selector
+  else
+    // remove any non-alphanumerical character
+    string = replace('\W', ' ', selector() )
+    // remove pseudo classes
+    pseudo = replace('before|after|hover|active|visited|target', '', string)
+    // remove remaining whitespace
+    whiteSpace = replace('\s', '', pseudo)
+    // remove every character before last word
+    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    // unquote
+    name = unquote(selector)
+
+  // set animation
+
+  // if custom name available
+  if (customNameAvailable == true)
+    animation options
+
+  else
+    animation name options
+
+  // set keyframes
+  @keyframes {name}
+
+    // loop through keyframes
+    for keyframe, n in keyframes
+
+      // parse keyframe value
+      keyframeCheck = join(', ', keyframe)
+
+      // check if keyframe value starts with a number
+      if ( match('^\d', keyframeCheck) )
+        percentageAvailable = true
+
+      else
+        percentageAvailable = false
+
+      // check if keyframe value contains transform
+      if ( match('translate|rotate|scale|skew', keyframeCheck) )
+        transformAvailable = true
+
+      else
+        transformAvailable = false
+
+      // read percentage
+      if (percentageAvailable == true)
+        percentage = keyframe[0]
+
+      // create percentage if unavailable
+      else
+
+        // calculate if more than one keyframe
+        if (length(keyframes) > 1)
+          percentage = (100 / ( ( length(keyframes) - 1) / n) ) * 1%
+
+        // otherwise - set to 0
+        else
+          percentage = 0%
+
+      // create percentage
+      {percentage}
+
+        // define transform hash
+        transformProps = {}
+
+        // loop through keyframe props
+        for prop, n in keyframe
+
+          // parse prop value
+          propCheck = join(', ', prop)
+
+          // check if prop value starts with a number
+          if ( match('^\d', propCheck) )
+            isPercentage = true
+
+          else
+            isPercentage = false
+
+          // check if prop value contains transform
+          if ( match('translate|rotate|scale|skew', propCheck) )
+            isTransform = true
+
+          else
+            isTransform = false
+
+          // check if prop value contains easing
+          if ( match('ease|cubic-bezier', propCheck) )
+            isEasing = true
+
+          else
+            isEasing = false
+
+          // append prop to transform hash (if transform)
+          if (isTransform == true)
+              transformProps[n] = prop
+
+          // add timing function (if easing)
+          if (isEasing == true)
+            animation-timing-function prop
+
+          // add prop if none of the above (else condition escaping percentage)
+          if (isPercentage == false && isTransform == false && isEasing == false)
+
+            // split prop and value
+            regularProp = split('(', '' + prop)
+            regularValue = split(')', '' + regularProp[1])
+
+            // unquote
+            printProp = unquote(regularProp[0])
+            printValue = unquote(regularValue[0])
+
+            // add
+            {printProp} printValue
+
+        // add transform props where percentage is available
+        if (transformAvailable == true && percentageAvailable == true)
+          transform unquote(split('{} ', '' + transformProps)[1])
+
+        // add transform props where percentage is unavailable
+        else if (transformAvailable == true)
+          transform unquote(split('{} ', '' + transformProps)[0])
+
+// alias
+animated = animate

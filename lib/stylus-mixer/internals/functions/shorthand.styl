@@ -1,0 +1,32 @@
+/**
+ * Shorthand (shorthand.styl)
+ * --------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Shorthand functions used in various
+ *         functions, mixins, etc.
+ */
+
+strip-units()
+  unit(arguments, '')
+
+add-braces()
+  join('', '(', arguments, ')')
+
+add-quotes()
+  join('', arguments)
+
+create-string()
+  join(', ', arguments)
+
+create-prop()
+  unquote( join('', arguments) )
+
+create-val()
+  unquote( join('', arguments) )
+
+create-list()
+  unquote( join(', ', arguments) )
+
+create-object()
+  convert( join('.', arguments) )

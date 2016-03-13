@@ -1,0 +1,20 @@
+{
+  "name": "stylus-mixer",
+  "version": "0.1.0",
+  "description": "Stylus library offering powerfull functions and mixins, as well as advanced auto-prefixing with property lookup, global resets, normalization, and much more.",
+  "main": "lib/stylus-mixer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "stylus",
+    "styl",
+    "css",
+    "preprocess",
+    "autoprefix",
+    "mixins",
+    "functions"
+  ],
+  "author": "Marko Radak <@iammarkoradak> (http://markoradak.com)",
+  "license": "MIT"
+}

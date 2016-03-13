@@ -1,0 +1,100 @@
+/**
+ * Text Gradient (text-gradient.styl)
+ * ----------------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides gradient mixin suited for
+ *         text gradients. Supports webkit only,
+ *         using '@support' rule.
+ *
+ * @syntax
+ *   text-gradient <options>, <origin>, <colors> ...
+ *
+ * @examples
+ *   text-gradient linear, left, red, white
+ *
+ *   text-gradient \
+ *     linear repeating mix,
+ *     bottom left,
+ *     0% #ff0000, 2% #ff0000,
+ *     2% #ffffff, 4% #ffffff
+ */
+
+text-gradient(options, origin, colors...)
+
+  // define start and end colors
+  startColor = colors[0][0]
+  endColor = colors[-1][0]
+
+  // create color props list
+  colors = create-list(colors)
+
+  // configure inversed-origin
+  if origin is a 'unit'
+    inversedOrigin = origin
+
+  else
+    inversedOrigin = opposite-position(origin)
+    inversedOrigin = create-prop('to ', inversedOrigin)
+
+  // create options string
+  opt = create-string(options)
+
+  // radial
+  if match('radial?', opt)
+    prefixedVal = add-braces( join(', ', origin, 'circle', colors) )
+    officialVal = add-braces( join(', ', circle at origin, colors) )
+
+    // repeating
+    if match('repeating?', opt)
+      prefixed = create-prop('repeating-radial-gradient', prefixedVal)
+      official = create-prop('repeating-radial-gradient', officialVal)
+
+    // standard
+    else
+      prefixed = create-prop('radial-gradient', prefixedVal)
+      official = create-prop('radial-gradient', officialVal)
+
+  // linear (default)
+  else
+    prefixedVal = add-braces( join(', ', origin, colors) )
+    officialVal = add-braces( join(', ', inversedOrigin, colors) )
+
+    // repeating
+    if match('repeating?', opt)
+      prefixed = create-prop('repeating-linear-gradient', prefixedVal)
+      official = create-prop('repeating-linear-gradient', officialVal)
+
+    // standard
+    else
+      prefixed = create-prop('linear-gradient', prefixedVal)
+      official = create-prop('linear-gradient', officialVal)
+
+  // create gradient function
+  gradientFunction()
+    create-prop(official)
+
+  // determine if mix exists
+  if (match('mix?', opt))
+    mixAvailable = true
+  else
+    mixAvailable = false
+
+  // mix
+  mix = linear-gradient(\
+    hsla( mix(startColor,endColor), 0.5),
+    hsla( mix(startColor,endColor), 0.5))
+
+  // create mix function
+  mixFunction()
+    create-prop(mix, ',') if mixAvailable
+
+  // print @support rule
+  @supports (-webkit-background-clip: text)
+
+    // print out standard syntax
+    background mixFunction() gradientFunction()
+
+    // print remaining props
+    -webkit-background-clip text
+    -webkit-text-fill-color transparent

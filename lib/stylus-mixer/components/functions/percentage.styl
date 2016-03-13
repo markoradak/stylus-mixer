@@ -1,0 +1,29 @@
+/**
+ * Percentage (percentage.styl)
+ * ----------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides function that calculates
+ *         percantage between a two defined
+ *         numbers.
+ *
+ * @syntax
+ *   percent([n], [n])
+ *
+ * @examples
+ *   percent(50px, 200px)
+ *   percent(100, 360)
+ *   percentage(20%, 50%)
+ */
+
+percent(value, total)
+
+  // strip units
+  value = strip-units(value)
+  total = strip-units(total)
+
+  // convert
+  (value/total) * 100%
+
+// alias
+percentage = percent

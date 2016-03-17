@@ -12,6 +12,9 @@
     "mixins",
     "functions"
   ],
+  "scripts": {
+    "test": "stylus -w --sourcemap-inline tests/*"
+  },
   "dependencies": {
     "stylus": "^0.54.2"
   },

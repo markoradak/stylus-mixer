@@ -320,7 +320,7 @@
     "opera-o" : "0"
   },
 
-  "ccolumn-span" : {
+  "column-span" : {
     "ie"      : "0",
     "edge"    : "0",
     "firefox" : "sp",

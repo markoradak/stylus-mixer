@@ -20,6 +20,8 @@ cursor()
   // zoom
   if match('zoom?', args)
 
+    // print prefixed
+
     if prefix-webkit('cursor-zoom')
       cursor create-val('-webkit-', args)
 
@@ -37,6 +39,8 @@ cursor()
 
   // grab
   if match('grab', args)
+
+    // print prefixed
 
     if prefix-webkit('cursor-grab')
       cursor create-val('-webkit-', args)

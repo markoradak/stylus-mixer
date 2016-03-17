@@ -25,6 +25,9 @@ create-prop()
 create-val()
   unquote( join('', arguments) )
 
+create-block()
+  unquote( join(' ', arguments) )
+
 create-list()
   unquote( join(', ', arguments) )
 

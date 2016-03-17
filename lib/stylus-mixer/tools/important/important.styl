@@ -24,13 +24,13 @@ if important-everything
 
   // iterate regular
   for prop in props
-    define( ''+prop, @() {
+    define('' + prop, @() {
       -important(arguments)
     })
 
   // iterate prefixed
   for prop in support
-    define( ''+prop, @() {
+    define('' + prop, @() {
       -vendor(arguments add-important() )
     })
 

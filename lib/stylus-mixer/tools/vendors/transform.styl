@@ -1,0 +1,76 @@
+transform()
+
+  // print prefixed
+
+  if prefix-webkit('transform')
+    -webkit-transform arguments
+
+  if prefix-moz('transform')
+    -moz-transform arguments
+
+  if prefix-ms('transform')
+    -ms-transform arguments
+
+  if prefix-o('transform')
+    -o-transform arguments
+
+  // print unprefixed
+  transform arguments
+
+transition()
+
+  // create transition function
+  getTransitionValue()
+
+    // iterate through transition values
+    values = ()
+    for argument in arguments
+
+      // iterate through each transition value bit
+      argValues = ()
+      for arg in argument
+
+        // create test argument
+        testArg = create-string(arg)
+
+        // add vendor prefix if transform
+        if (testArg == 'transform()')
+          argVal = create-val(vendorPrefix, 'transform')
+
+        // continue otherwise
+        else
+          argVal = arg
+
+        // push each transition value
+        push(argValues, argVal)
+
+      // push final transition value
+      composedValue = create-block(argValues)
+      push(values, composedValue)
+
+    // create transition value list
+    transitionValue = create-list(values)
+
+  // print prefixed
+
+  if prefix-webkit('transform')
+    vendorPrefix = '-webkit-'
+    -webkit-transition getTransitionValue(arguments)
+
+  if prefix-moz('transform')
+    vendorPrefix = '-moz-'
+    -moz-transition getTransitionValue(arguments)
+
+  if prefix-ms('transform')
+    vendorPrefix = '-ms-'
+    -ms-transition getTransitionValue(arguments)
+
+  if prefix-o('transform')
+    vendorPrefix = '-o-'
+    -o-transition getTransitionValue(arguments)
+
+  else
+    vendorPrefix = ''
+
+  // print unprefixed
+  transition getTransitionValue(arguments)

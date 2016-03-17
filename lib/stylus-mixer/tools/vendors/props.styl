@@ -80,6 +80,7 @@ vendors-list = webkit, moz, ms, o
 if auto-prefix
 
   for prop in support
-    define( ''+prop, @() {
-      -vendor(arguments)
-    })
+    unless (prop == 'transform')
+      define('' + prop, @() {
+        -vendor(arguments)
+      })

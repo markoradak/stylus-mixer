@@ -50,13 +50,12 @@ transition()
 
     // create initial arguments test
     testArguments = '"' + arguments '"'
-    warn(testArguments)
 
     // create list if arguments contain more than 1 value pair
     if (match(',', testArguments))
       transitionValue = create-list(values)
 
-    // otherwise create block 
+    // otherwise create block
     else
       transitionValue = create-block(values)
 

@@ -53,19 +53,19 @@ transition()
 
   // print prefixed
 
-  if prefix-webkit('transform')
+  if prefix-webkit('transition')
     vendorPrefix = '-webkit-'
     -webkit-transition getTransitionValue(arguments)
 
-  if prefix-moz('transform')
+  if prefix-moz('transition')
     vendorPrefix = '-moz-'
     -moz-transition getTransitionValue(arguments)
 
-  if prefix-ms('transform')
+  if prefix-ms('transition')
     vendorPrefix = '-ms-'
     -ms-transition getTransitionValue(arguments)
 
-  if prefix-o('transform')
+  if prefix-o('transition')
     vendorPrefix = '-o-'
     -o-transition getTransitionValue(arguments)
 

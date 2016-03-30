@@ -1,0 +1,100 @@
+/**
+ * Unsplash (unsplash.styl)
+ * ------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides mixin that returns
+ *         unsplash.it url with a random image
+ *
+ * @syntax
+ *   unsplash([n] ?[n], <options>, <background-options>)
+ *
+ * @examples
+ *   unsplash(500)
+ *   unsplash(1920 1080, grayscale, top left)
+ *   unsplash(2000, blur)
+ *   unsplash(3000 1000, b, g)
+ *   unsplash(20, repeat)
+ */
+
+unsplash(size, options, backgroundOptions...)
+
+  // set different width and height
+  // if two values are provided
+  if (length(size) > 1)
+    $width  = size[0]
+    $height = size[1]
+
+  // set the same width and height
+  // if one value is provided
+  else if (length(size) == 1)
+    $width  = size
+    $height = size
+
+  // throw error otherwise
+  else
+    error("Unsplash function supports up to 2 values as size.")
+
+  // create options string
+  $optionsCheck = create-string(options)
+
+  // set options to backgroundOptions
+  // if no options provided
+  if (!match('grayscale|g|blur|b', $optionsCheck))
+    backgroundOptions = options
+
+  // set grayscale as path, if defined
+  if (match('grayscale|g', $optionsCheck))
+    $grayscale = 'g/'
+  else
+    $grayscale = ''
+
+  // set blur as query string, if defined
+  if (match('blur|b', $optionsCheck))
+    $blur = '&blur'
+  else
+    $blur = ''
+
+  // create background options string
+  $backgrounOptionsCheck = create-string(backgroundOptions)
+
+  // check if existing and set
+  // as background options if true
+  if (length($backgrounOptionsCheck > 0) && $backgrounOptionsCheck != null)
+    $bgOptions = backgroundOptions
+
+  // set defaults otherwise
+  else
+    $bgOptions = unquote('no-repeat center')
+    $bgCover = true
+
+  // create another background options string check
+  $bgOptionsCheck = create-string($bgOptions)
+
+  // remove 'cover' if available,
+  // and set it's variable to true
+  if (match('cover', $bgOptionsCheck))
+    $bgCover = true
+    $bgOptions = replace('cover', '', $bgOptions)
+    $bgOptions = create-prop($bgOptions)
+
+  // remove 'contain' if available,
+  // and set it's variable to true
+  if (match('contain', $bgOptionsCheck))
+    $bgContain = true
+    $bgOptions = replace('contain', '', $bgOptions)
+    $bgOptions = create-prop($bgOptions)
+
+  // create background value
+  $value = url( join('', 'https://unsplash.it/', $grayscale, $width, '/', $height, '?image=', random(0,1000), $blur)) $bgOptions
+
+  // print value
+  background $value
+
+  // print 'cover' if true
+  if ($bgCover == true)
+    background-size cover
+
+  // print 'contain' if true
+  if ($bgContain == true)
+    background-size contain

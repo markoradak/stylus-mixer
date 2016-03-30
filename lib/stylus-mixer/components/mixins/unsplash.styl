@@ -31,7 +31,7 @@ unsplash(size, options...)
 
   // assign all arguments to size,
   // if options doesn't exist
-  if (length(arguments) > 1 && !match('grayscale|blur|cover|contain|fixed|center|repeat|no-repeat|repeat-x|repeat-y|top|right|bottom|left', $optionsCheck))
+  if (length(arguments) > 1 && !match('grayscale|blur|cache|cover|contain|fixed|center|repeat|no-repeat|repeat-x|repeat-y|top|right|bottom|left', $optionsCheck))
     size = arguments
     options = unquote('')
 
@@ -55,6 +55,7 @@ unsplash(size, options...)
   // to empty values
   $grayscale = unquote('')
   $blur = unquote('')
+  $query = '&random='
 
   // if options exist
   if (options)
@@ -71,9 +72,15 @@ unsplash(size, options...)
       $options = replace('color', '', $options)
 
     // set blur as query string, if defined
-    if (match('b', $optionsCheck))
+    if (match('blur', $optionsCheck))
       $blur = '&blur'
       $options = replace('blur', '', $options)
+
+    // remove 'cache' if available
+    // and set query to image
+    if (match('cache', $optionsCheck))
+      $query = '&image='
+      $options = replace('cache', '', $options)
 
     // remove 'cover' if available,
     // and set it's variable to true
@@ -103,11 +110,17 @@ unsplash(size, options...)
     $options = 'center'
     $cover = true
 
+  // remove unnecesary whitespace
+  $options = create-string($options)
+
   // create prop from remaining options
   $options = create-val($options)
 
+  // get random number id
+  $id = random(0,900)
+
   // create background url
-  $url = add-quotes('https://unsplash.it/', $grayscale, $width, '/', $height, '?random=', random(0,900), $blur)
+  $url = add-quotes('https://unsplash.it/', $grayscale, $width, '/', $height, $query, $id, $blur)
   $url = create-val('url(',$url,')')
 
   // join background url and options,

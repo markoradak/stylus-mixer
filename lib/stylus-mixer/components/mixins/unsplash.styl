@@ -55,7 +55,7 @@ unsplash(size, options...)
   // to empty values
   $grayscale = unquote('')
   $blur = unquote('')
-  $query = '&random='
+  $query = '?random='
 
   // if options exist
   if (options)
@@ -79,7 +79,7 @@ unsplash(size, options...)
     // remove 'cache' if available
     // and set query to image
     if (match('cache', $optionsCheck))
-      $query = '&image='
+      $query = '?image='
       $options = replace('cache', '', $options)
 
     // remove 'cover' if available,

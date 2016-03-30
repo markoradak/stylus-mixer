@@ -108,7 +108,7 @@ unsplash(size, options...)
 
   // create background url
   $url = create-val('https://unsplash.it/', $grayscale, $width, '/', $height, '?image=', random(0,1000), $blur)
-  $url = create-val(url($url))
+  $url = url($url)
 
   // join background url and options,
   // and create prop from it

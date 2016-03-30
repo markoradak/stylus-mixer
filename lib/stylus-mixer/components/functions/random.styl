@@ -1,0 +1,18 @@
+/**
+ * Random (random.styl)
+ * --------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides function returns random
+ *         number between two given numbers.
+ *
+ * @syntax
+ *   random([n], [n])
+ *
+ * @examples
+ *   random(0, 100)
+ *   random(200, 3200)
+ */
+
+random(min,max)
+  return floor( math(0, 'random')*(max - min + 1) + min )

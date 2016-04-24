@@ -130,6 +130,9 @@ spring-in-place(options, strength, elasticity, props)
               if ( transformValue <= 1 )
                 newValue = transformValue + (transformValue * (coefficient ** step)) - (transformValue - 1)
 
+            // format new value
+            newValue = round( newValue, 2)
+
             // create new prop
             newProp = join('', split[0], '(', newValue, ')')
 

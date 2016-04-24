@@ -36,7 +36,7 @@ spring-to(options, strength, elasticity, props)
   // unless fill mode is already definied
   unless ( match('forwards|backwards|both', optionsCheck) )
     options = join(' ', options, 'forwards')
-    options = unquote(options) 
+    options = unquote(options)
 
   // set name …
 
@@ -140,6 +140,9 @@ spring-to(options, strength, elasticity, props)
             // percentage is "100%"
             if ( percentage == '100%' )
               newValue = transformValue
+
+            // format new value
+            newValue = round( newValue, 2)
 
             // create new prop
             newProp = join('', split[0], '(', newValue, ')')

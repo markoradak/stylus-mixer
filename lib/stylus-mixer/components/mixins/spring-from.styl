@@ -1,0 +1,169 @@
+/**
+ * Spring From (spring-from.styl)
+ * ------------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Provides quick, short-hand like syntax
+ *         for animations and keyframes.
+ *
+ * @syntax
+ *   spring-from <options>, <strength>, <elasticity>, <course>, <props>
+ *
+ * @examples
+ *   spring-from 1000ms, 5, 5, from, translateX(-100px)
+ *
+ *   spring-from \
+ *     name 2000ms infinite, \
+ *     6, 9, to, \
+ *     scale(2) opacity(1)
+ */
+
+spring-from(options, strength, elasticity, props)
+
+  // parse options value
+  optionsCheck = join(', ', options)
+
+  // check if options have custom name set
+  if (
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+  )
+    customNameAvailable = false
+
+  else
+    customNameAvailable = true
+
+  // set name …
+
+  // use from options if available
+  if (customNameAvailable == true)
+    name = options[0]
+
+  // otherwise - create from selector
+  else
+    // remove any non-alphanumerical character
+    string = replace('\W', ' ', selector() )
+    // remove pseudo classes
+    pseudo = replace('before|after|hover|active|visited|target', '', string)
+    // remove remaining whitespace
+    whiteSpace = replace('\s', '', pseudo)
+    // remove every character before last word
+    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    // unquote
+    name = unquote(selector)
+
+  // set animation …
+
+  // if custom name available
+  if (customNameAvailable == true)
+    animation options
+
+  else
+    animation name options
+
+  // set values …
+
+  coeficient = (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 )
+
+  coeficient = ( coeficient / 2 / (-100) )
+
+  steps = strength
+
+  // set keyframes
+  @keyframes {name}
+
+    // loop through steps
+    for step, n in 0...steps
+
+      percentage = 100 / steps * step * 1%
+
+      // parse keyframe value
+      propsCheck = join(', ', props)
+
+      // check if keyframe value contains transform
+      if ( match('translate|rotate|scale|skew', propsCheck) )
+        transformAvailable = true
+
+      else
+        transformAvailable = false
+
+      // create percentage
+      {percentage}
+
+        // define transform hash
+        transformProps = {}
+
+        // loop through props
+        for prop, n in props
+
+          // parse prop value
+          propCheck = join(', ', prop)
+
+          // check if prop value contains transform
+          if ( match('translate|rotate|scale|skew', propCheck) )
+            isTransform = true
+
+          else
+            isTransform = false
+
+          // append prop to transform hash (if transform)
+          if (isTransform == true)
+
+            // split prop and value
+            split = split('(', '' + prop)
+
+            transformValue = split(')', '' + split[1])
+            transformValue = convert(transformValue)
+
+            newValue = transformValue * (coeficient ** step)
+
+            if (split[0] == 'scale' && percentage != '0%')
+
+              eq = strength * 4
+
+              if ( transformValue <= 1 )
+                inverser = \
+                  ( (1 - transformValue) * (eq - (eq * transformValue)) )
+                newValue = 1 - ( newValue * inverser )
+
+              else
+                inverser = \
+                  ( (1 - transformValue) * (eq - (eq * transformValue)) ) * (2 - transformValue)
+                newValue = 1 + ( newValue * inverser )
+
+            newProp = join('', split[0], '(', newValue, ')')
+
+            transformProps[n] = newProp
+
+          // print regular prop otherwise
+          else
+
+            if ( percentage == '0%' )
+
+              // split prop and value
+              regularProp = split('(', '' + prop)
+              regularValue = split(')', '' + regularProp[1])
+
+              // unquote
+              printProp = unquote(regularProp[0])
+              printValue = unquote(regularValue[0])
+
+              // print
+              {printProp} printValue
+
+            half = ceil(steps/2)
+
+            if ( step == half )
+
+              // split prop and value
+              regularProp = split('(', '' + prop)
+
+              // unquote
+              printProp = unquote(regularProp[0])
+
+              // print
+              {printProp} inherit
+
+
+        // add transform props
+        if (transformAvailable == true)
+          transform unquote(split('{} ', '' + transformProps)[0])

@@ -32,6 +32,12 @@ spring-to(options, strength, elasticity, props)
   else
     customNameAvailable = true
 
+  // add 'forwards' fill mode to options
+  // unless fill mode is already definied
+  unless ( match('forwards|backwards|both', optionsCheck) )
+    options = join(' ', options, 'forwards')
+    options = unquote(options) 
+
   // set name …
 
   // use from options if available

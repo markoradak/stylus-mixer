@@ -9,8 +9,15 @@ body
   background white
 
 .box
-  size 200px
-  background $alizarin
+  font-family sans-serif
+  font-size 3em
+  padding 10px 20px
+  background-color $squeezed-lime
+  color white
+
+  &:hover
+    cursor pointer
+    background lighten($squeezed-lime, 20%)
 
   &:active
-    spring-in-place 750ms forwards, 5, 9, translateX(300px) rotate(30deg)
+    spring-from 1000ms, 5, 9, translateX(-500px)

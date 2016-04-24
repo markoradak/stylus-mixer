@@ -16,46 +16,46 @@ body {
   animation: box 1000ms forwards;
 }
 @-webkit-keyframes box {
+  0% {
+    -webkit-transform: translateX(-500px);
+    transform: translateX(-500px);
+  }
   20% {
-    -webkit-transform: scale(2.36075);
-    transform: scale(2.36075);
+    -webkit-transform: translateX(251.24999999999997px);
+    transform: translateX(251.24999999999997px);
   }
   40% {
-    -webkit-transform: scale(1.7882681249999999);
-    transform: scale(1.7882681249999999);
+    -webkit-transform: translateX(-126.25312499999997px);
+    transform: translateX(-126.25312499999997px);
   }
   60% {
-    -webkit-transform: scale(1.9270949796874999);
-    transform: scale(1.9270949796874999);
+    -webkit-transform: translateX(63.442195312499976px);
+    transform: translateX(63.442195312499976px);
   }
   80% {
-    -webkit-transform: scale(1.8934294674257812);
-    transform: scale(1.8934294674257812);
-  }
-  100% {
-    -webkit-transform: scale(1.9);
-    transform: scale(1.9);
+    -webkit-transform: translateX(-31.87970314453123px);
+    transform: translateX(-31.87970314453123px);
   }
 }
 @keyframes box {
+  0% {
+    -webkit-transform: translateX(-500px);
+    transform: translateX(-500px);
+  }
   20% {
-    -webkit-transform: scale(2.36075);
-    transform: scale(2.36075);
+    -webkit-transform: translateX(251.24999999999997px);
+    transform: translateX(251.24999999999997px);
   }
   40% {
-    -webkit-transform: scale(1.7882681249999999);
-    transform: scale(1.7882681249999999);
+    -webkit-transform: translateX(-126.25312499999997px);
+    transform: translateX(-126.25312499999997px);
   }
   60% {
-    -webkit-transform: scale(1.9270949796874999);
-    transform: scale(1.9270949796874999);
+    -webkit-transform: translateX(63.442195312499976px);
+    transform: translateX(63.442195312499976px);
   }
   80% {
-    -webkit-transform: scale(1.8934294674257812);
-    transform: scale(1.8934294674257812);
-  }
-  100% {
-    -webkit-transform: scale(1.9);
-    transform: scale(1.9);
+    -webkit-transform: translateX(-31.87970314453123px);
+    transform: translateX(-31.87970314453123px);
   }
 }

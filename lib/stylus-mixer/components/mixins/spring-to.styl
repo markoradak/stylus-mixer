@@ -62,10 +62,13 @@ spring-to(options, strength, elasticity, props)
 
   // set values …
 
-  coeficient = (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 )
+  // calculate coefficient
+  coefficient = ( (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 ) / 2 )
 
-  coeficient = ( coeficient / 2 / (-100) )
+  // create decimal
+  coefficient = ( coefficient / (-100) )
 
+  // assign number of steps to strength
   steps = strength
 
   // set keyframes
@@ -74,6 +77,7 @@ spring-to(options, strength, elasticity, props)
     // loop through steps
     for step, n in 1..steps
 
+      // create percentage number
       percentage = 100 / steps * step * 1%
 
       // parse keyframe value
@@ -111,29 +115,39 @@ spring-to(options, strength, elasticity, props)
             // split prop and value
             split = split('(', '' + prop)
 
+            // set transform value
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
 
-            newValue = transformValue - (transformValue * (coeficient ** step))
+            // calculate new value
+            newValue = transformValue - (transformValue * (coefficient ** step))
 
+            // handle 'scale' separately
+            // as it doesn't default to '0'
             if (split[0] == 'scale')
 
               if ( transformValue <= 1 )
-                newValue = transformValue + (transformValue * (coeficient ** step))
+                newValue = transformValue + (transformValue * (coefficient ** step))
                 newValue = newValue
 
+            // set original value if
+            // percentage is "100%"
             if ( percentage == '100%' )
               newValue = transformValue
 
+            // create new prop
             newProp = join('', split[0], '(', newValue, ')')
 
+            // push new prop
             transformProps[n] = newProp
 
           // print regular prop otherwise
           else
 
+            // get steps halfway
             half = floor(steps/2)
 
+            // print after halfway
             if ( step >= half )
 
               // split prop and value

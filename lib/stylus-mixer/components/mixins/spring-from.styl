@@ -62,10 +62,13 @@ spring-from(options, strength, elasticity, props)
 
   // set values …
 
-  coeficient = (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 )
+  // calculate coefficient
+  coefficient = ( (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 ) / 2 )
 
-  coeficient = ( coeficient / 2 / (-100) )
+  // create decimal
+  coefficient = ( coefficient / (-100) )
 
+  // assign number of steps to strength
   steps = strength
 
   // set keyframes
@@ -74,6 +77,7 @@ spring-from(options, strength, elasticity, props)
     // loop through steps
     for step, n in 0...steps
 
+      // create percentage number
       percentage = 100 / steps * step * 1%
 
       // parse keyframe value
@@ -111,32 +115,50 @@ spring-from(options, strength, elasticity, props)
             // split prop and value
             split = split('(', '' + prop)
 
+            // set transform value
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
 
-            newValue = transformValue * (coeficient ** step)
+            // calculate new value
+            newValue = transformValue * (coefficient ** step)
 
+            // handle 'scale' separately
+            // as it doesn't default to '0'
             if (split[0] == 'scale' && percentage != '0%')
 
+              // scale equalizer
               eq = strength * 4
 
+              // if scaling from less than '1'
               if ( transformValue <= 1 )
+
+                // calculate inverser
                 inverser = \
                   ( (1 - transformValue) * (eq - (eq * transformValue)) )
+
+                // calculate new value
                 newValue = 1 - ( newValue * inverser )
 
+              // if scaling from more than '1'
               else
+
+                // calculate inverser
                 inverser = \
                   ( (1 - transformValue) * (eq - (eq * transformValue)) ) * (2 - transformValue)
+
+                // calculate new value
                 newValue = 1 + ( newValue * inverser )
 
+            // create new prop
             newProp = join('', split[0], '(', newValue, ')')
 
+            // push new prop
             transformProps[n] = newProp
 
           // print regular prop otherwise
           else
 
+            // print on start
             if ( percentage == '0%' )
 
               // split prop and value
@@ -150,8 +172,10 @@ spring-from(options, strength, elasticity, props)
               // print
               {printProp} printValue
 
+            // get steps halfway
             half = ceil(steps/2)
 
+            // print on halfway
             if ( step == half )
 
               // split prop and value
@@ -162,7 +186,6 @@ spring-from(options, strength, elasticity, props)
 
               // print
               {printProp} inherit
-
 
         // add transform props
         if (transformAvailable == true)

@@ -1,22 +1,14 @@
-// deasync function
-var when = function() {
-  var args = arguments;  // the functions to execute first
-  return {
-    then: function(done) {
-      var counter = 0;
-      for(var i = 0; i < args.length; i++) {
-        // call each function with a function to call on done
-        args[i](function() {
-          counter++;
-          if(counter === args.length) {  // all functions have notified they're done
-            done();
-          }
-        });
-      }
-    }
-  };
-};
+/**
+ * Build (build.js)
+ * ----------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Development build script.
+ *         Concats all required files, strips
+ *         comments, and removes empty lines.
+ */
 
+// list library requirements
 var src = [
   './src/internals/config/config.styl',
   './src/internals/support/support.styl',
@@ -55,27 +47,59 @@ var src = [
   './src/components/mixins/unsplash.styl',
 ]
 
+// deasync function …
+var when = function() {
+  var args = arguments;
+  return {
+    then: function(done) {
+      var counter = 0;
+      for(var i = 0; i < args.length; i++) {
+        args[i](function() {
+          counter++;
+          if(counter === args.length) {
+            done();
+          }
+        });
+      }
+    }
+  };
+};
+
+// concat source
 function concatSrc( done ) {
 
+  // require 'concat-files'
   var concat = require('concat-files');
 
+    // concat
     concat(src, './lib/stylus-mixer.styl', function() {
       done()
     });
 
 }
 
+// strip library
 function stripLib() {
 
+  // require 'fs'
   var fs = require('fs');
-  var lib = fs.readFileSync('./lib/stylus-mixer.styl', { encoding: 'utf8' });
+
+  // require 'strip'
   var strip = require('strip-comment');
 
+  // read file
+  var lib = fs.readFileSync('./lib/stylus-mixer.styl', { encoding: 'utf8' });
+
+  // strip comments
   var stripped = strip.js(lib);
+
+  // strip empty lines
   var stripped = stripped.replace(/^\s*[\r\n]/gm, '');
 
+  // write file
   fs.writeFile('./lib/stylus-mixer.styl', stripped);
 
 }
 
+// execute deasynchronously
 when( concatSrc ).then( stripLib );

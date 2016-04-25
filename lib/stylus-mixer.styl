@@ -104,79 +104,84 @@ if auto-prefix
       define('' + prop, @() {
         -vendor(arguments)
       })
-transform()
-  if prefix-webkit('transform')
-    -webkit-transform arguments
-  if prefix-moz('transform')
-    -moz-transform arguments
-  if prefix-ms('transform')
-    -ms-transform arguments
-  if prefix-o('transform')
-    -o-transform arguments
-  transform arguments
-transition()
-  getTransitionValue()
-    values = ()
-    for argument in arguments
-      argValues = ()
-      for arg in argument
-        testArg = create-string(arg)
-        if (testArg == 'transform()')
-          argVal = create-val(vendorPrefix, 'transform')
-        else
-          argVal = arg
-        push(argValues, argVal)
-      composedValue = create-block(argValues)
-      push(values, composedValue)
-    testArguments = '"' + arguments '"'
-    if (match('(?![^(]*\)),', testArguments))
-      transitionValue = create-list(values)
+if auto-prefix
+  transform()
+    if prefix-webkit('transform')
+      -webkit-transform arguments
+    if prefix-moz('transform')
+      -moz-transform arguments
+    if prefix-ms('transform')
+      -ms-transform arguments
+    if prefix-o('transform')
+      -o-transform arguments
+    transform arguments
+  transition()
+    getTransitionValue()
+      values = ()
+      for argument in arguments
+        argValues = ()
+        for arg in argument
+          testArg = create-string(arg)
+          if (testArg == 'transform()')
+            argVal = create-val(vendorPrefix, 'transform')
+          else
+            argVal = arg
+          push(argValues, argVal)
+        composedValue = create-block(argValues)
+        push(values, composedValue)
+      testArguments = '"' + arguments '"'
+      if (match('(?![^(]*\)),', testArguments))
+        transitionValue = create-list(values)
+      else
+        transitionValue = create-block(values)
+    if prefix-webkit('transition')
+      vendorPrefix = '-webkit-'
+      -webkit-transition getTransitionValue(arguments)
+    if prefix-moz('transition')
+      vendorPrefix = '-moz-'
+      -moz-transition getTransitionValue(arguments)
+    if prefix-ms('transition')
+      vendorPrefix = '-ms-'
+      -ms-transition getTransitionValue(arguments)
+    if prefix-o('transition')
+      vendorPrefix = '-o-'
+      -o-transition getTransitionValue(arguments)
     else
-      transitionValue = create-block(values)
-  if prefix-webkit('transition')
-    vendorPrefix = '-webkit-'
-    -webkit-transition getTransitionValue(arguments)
-  if prefix-moz('transition')
-    vendorPrefix = '-moz-'
-    -moz-transition getTransitionValue(arguments)
-  if prefix-ms('transition')
-    vendorPrefix = '-ms-'
-    -ms-transition getTransitionValue(arguments)
-  if prefix-o('transition')
-    vendorPrefix = '-o-'
-    -o-transition getTransitionValue(arguments)
+      vendorPrefix = ''
+    transition getTransitionValue(arguments)
+if auto-prefix
+  cursor()
+    cursor arguments
+    args = create-string(arguments)
+    if match('zoom?', args)
+      if prefix-webkit('cursor-zoom')
+        cursor create-val('-webkit-', args)
+      if prefix-moz('cursor-zoom')
+        cursor create-val('-moz-', args)
+      if prefix-ms('cursor-zoom')
+        cursor create-val('-ms-', args)
+      if prefix-o('cursor-zoom')
+        cursor create-val('-o-', args)
+      cursor crosshair
+    if match('grab', args)
+      if prefix-webkit('cursor-grab')
+        cursor create-val('-webkit-', args)
+      if prefix-moz('cursor-grab')
+        cursor create-val('-moz-', args)
+      if prefix-ms('cursor-grab')
+        cursor create-val('-ms-', args)
+      if prefix-o('cursor-grab')
+        cursor create-val('-o-', args)
+      cursor move
+if auto-prefix
+  if prefix-webkit('animation') && prefix-moz('animation')
+    vendors = webkit moz official
+  else if prefix-webkit('animation') && !prefix-moz('animation')
+    vendors = webkit official
+  else if !prefix-webkit('animation') && prefix-moz('animation')
+    vendors = moz official
   else
-    vendorPrefix = ''
-  transition getTransitionValue(arguments)
-cursor()
-  cursor arguments
-  args = create-string(arguments)
-  if match('zoom?', args)
-    if prefix-webkit('cursor-zoom')
-      cursor create-val('-webkit-', args)
-    if prefix-moz('cursor-zoom')
-      cursor create-val('-moz-', args)
-    if prefix-ms('cursor-zoom')
-      cursor create-val('-ms-', args)
-    if prefix-o('cursor-zoom')
-      cursor create-val('-o-', args)
-    cursor crosshair
-  if match('grab', args)
-    if prefix-webkit('cursor-grab')
-      cursor create-val('-webkit-', args)
-    if prefix-moz('cursor-grab')
-      cursor create-val('-moz-', args)
-    if prefix-ms('cursor-grab')
-      cursor create-val('-ms-', args)
-    if prefix-o('cursor-grab')
-      cursor create-val('-o-', args)
-    cursor move
-if prefix-webkit('animation') && prefix-moz('animation')
-  vendors = webkit moz official
-else if prefix-webkit('animation') && !prefix-moz('animation')
-  vendors = webkit official
-else if !prefix-webkit('animation') && prefix-moz('animation')
-  vendors = moz official
+    vendors = official
 else
   vendors = official
 if legacySupport
@@ -659,19 +664,34 @@ random(min,max)
 animate(options, keyframes...)
   optionsCheck = join(', ', options)
   if (
-    match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+    match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
   else
     customNameAvailable = true
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+  else
+    continuousAvailable = false
   if (customNameAvailable == true)
     name = options[0]
   else
-    string = replace('\W', ' ', selector() )
-    pseudo = replace('before|after|hover|active|visited|target', '', string)
-    whiteSpace = replace('\s', '', pseudo)
-    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    selector = selector()
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    string = replace('\W', ' ', selector)
     name = unquote(selector)
+  if ( continuousAvailable )
+    if ( match(':hover|:active', selector()) )
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
   if (customNameAvailable == true)
     animation options
   else
@@ -882,19 +902,34 @@ size()
 spring-from(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
   if (
-    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
   else
     customNameAvailable = true
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+  else
+    continuousAvailable = false
   if (customNameAvailable == true)
     name = options[0]
   else
-    string = replace('\W', ' ', selector() )
-    pseudo = replace('before|after|hover|active|visited|target', '', string)
-    whiteSpace = replace('\s', '', pseudo)
-    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    selector = selector()
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    string = replace('\W', ' ', selector)
     name = unquote(selector)
+  if ( continuousAvailable )
+    if ( match(':hover|:active', selector()) )
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
   if (customNameAvailable == true)
     animation options
   else
@@ -953,19 +988,34 @@ spring-from(options, strength, elasticity, props)
 spring-in-place(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
   if (
-    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
   else
     customNameAvailable = true
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+  else
+    continuousAvailable = false
   if (customNameAvailable == true)
     name = options[0]
   else
-    string = replace('\W', ' ', selector() )
-    pseudo = replace('before|after|hover|active|visited|target', '', string)
-    whiteSpace = replace('\s', '', pseudo)
-    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    selector = selector()
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    string = replace('\W', ' ', selector)
     name = unquote(selector)
+  if ( continuousAvailable )
+    if ( match(':hover|:active', selector()) )
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
   if (customNameAvailable == true)
     animation options
   else
@@ -1013,22 +1063,37 @@ spring-in-place(options, strength, elasticity, props)
 spring-to(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
   if (
-    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
   else
     customNameAvailable = true
-  unless ( match('forwards|backwards|both', optionsCheck) )
-    options = join(' ', options, 'forwards')
-    options = unquote(options)
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+  else
+    continuousAvailable = false
   if (customNameAvailable == true)
     name = options[0]
   else
-    string = replace('\W', ' ', selector() )
-    pseudo = replace('before|after|hover|active|visited|target', '', string)
-    whiteSpace = replace('\s', '', pseudo)
-    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    selector = selector()
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    string = replace('\W', ' ', selector)
     name = unquote(selector)
+  unless ( match('forwards|backwards|both', optionsCheck) )
+    options = join(' ', options, 'forwards')
+    options = unquote(options)
+  if ( continuousAvailable )
+    if ( match(':hover|:active', selector()) )
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
   if (customNameAvailable == true)
     animation options
   else

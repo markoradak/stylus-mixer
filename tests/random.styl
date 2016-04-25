@@ -1,4 +1,4 @@
 @require './src/index.styl'
 
-.box
-  animate 1000ms, scale(1) translateX(1000px) opacity(1)
+.box:hover
+  spring-from test 1000ms continuous, 5, 9, scale(1) translateX(1000px) opacity(1)

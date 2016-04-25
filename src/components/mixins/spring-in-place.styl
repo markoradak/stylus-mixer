@@ -47,14 +47,14 @@ spring-in-place(options, strength, elasticity, props)
 
   // otherwise - create from selector
   else
-    // remove any non-alphanumerical character
-    string = replace('\W', ' ', selector() )
+    selector = selector()
     // remove pseudo classes
-    pseudo = replace('before|after|hover|active|visited|target', '', string)
-    // remove remaining whitespace
-    whiteSpace = replace('\s', '', pseudo)
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
     // remove every character before last word
-    selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    // remove any non-alphanumerical character
+    string = replace('\W', ' ', selector)
     // unquote
     name = unquote(selector)
 

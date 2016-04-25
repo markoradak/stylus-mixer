@@ -1,15 +1,51 @@
 body .box:hover {
-  -webkit-animation: bodybox 1000ms;
-  animation: bodybox 1000ms;
+  -webkit-animation: test 1000ms forwards;
+  animation: test 1000ms forwards;
 }
-@-webkit-keyframes bodybox {
-  0% {
+body .box {
+  -webkit-animation: test 0ms 100ms;
+  animation: test 0ms 100ms;
+}
+@-webkit-keyframes test {
+  20% {
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25);
+  }
+  40% {
+    -webkit-transform: scale(0.63);
+    transform: scale(0.63);
+  }
+  60% {
+    -webkit-transform: scale(0.44);
+    transform: scale(0.44);
+  }
+  80% {
+    -webkit-transform: scale(0.53);
+    transform: scale(0.53);
+  }
+  100% {
     -webkit-transform: scale(0.5);
     transform: scale(0.5);
   }
 }
-@keyframes bodybox {
-  0% {
+@keyframes test {
+  20% {
+    -webkit-transform: scale(0.25);
+    transform: scale(0.25);
+  }
+  40% {
+    -webkit-transform: scale(0.63);
+    transform: scale(0.63);
+  }
+  60% {
+    -webkit-transform: scale(0.44);
+    transform: scale(0.44);
+  }
+  80% {
+    -webkit-transform: scale(0.53);
+    transform: scale(0.53);
+  }
+  100% {
     -webkit-transform: scale(0.5);
     transform: scale(0.5);
   }

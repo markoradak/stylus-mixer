@@ -1,52 +1,16 @@
-.box:hover {
-  -webkit-animation: test 1000ms continuous;
-  animation: test 1000ms continuous;
+body .box:hover {
+  -webkit-animation: bodybox 1000ms;
+  animation: bodybox 1000ms;
 }
-@-webkit-keyframes test {
+@-webkit-keyframes bodybox {
   0% {
-    opacity: 1;
-    -webkit-transform: scale(1) translateX(1000px);
-    transform: scale(1) translateX(1000px);
-  }
-  20% {
-    -webkit-transform: scale(1) translateX(-502.5px);
-    transform: scale(1) translateX(-502.5px);
-  }
-  40% {
-    -webkit-transform: scale(1) translateX(252.51px);
-    transform: scale(1) translateX(252.51px);
-  }
-  60% {
-    opacity: inherit;
-    -webkit-transform: scale(1) translateX(-126.88px);
-    transform: scale(1) translateX(-126.88px);
-  }
-  80% {
-    -webkit-transform: scale(1) translateX(63.76px);
-    transform: scale(1) translateX(63.76px);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }
-@keyframes test {
+@keyframes bodybox {
   0% {
-    opacity: 1;
-    -webkit-transform: scale(1) translateX(1000px);
-    transform: scale(1) translateX(1000px);
-  }
-  20% {
-    -webkit-transform: scale(1) translateX(-502.5px);
-    transform: scale(1) translateX(-502.5px);
-  }
-  40% {
-    -webkit-transform: scale(1) translateX(252.51px);
-    transform: scale(1) translateX(252.51px);
-  }
-  60% {
-    opacity: inherit;
-    -webkit-transform: scale(1) translateX(-126.88px);
-    transform: scale(1) translateX(-126.88px);
-  }
-  80% {
-    -webkit-transform: scale(1) translateX(63.76px);
-    transform: scale(1) translateX(63.76px);
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
   }
 }

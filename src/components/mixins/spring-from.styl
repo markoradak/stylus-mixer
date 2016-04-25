@@ -26,12 +26,19 @@ spring-from(options, strength, elasticity, props)
 
   // check if options have custom name set
   if (
-    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(', optionsCheck)
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
 
   else
     customNameAvailable = true
+
+  // check if options contain 'continuous' option
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+
+  else
+    continuousAvailable = false
 
   // set name …
 
@@ -51,6 +58,27 @@ spring-from(options, strength, elasticity, props)
     selector = replace('.*[^a-zA-Z]+', '', whiteSpace)
     // unquote
     name = unquote(selector)
+
+  // handle 'continuous' if available
+  if ( continuousAvailable )
+
+    // continue if using within
+    // 'hover' or 'active' selectors
+    if ( match(':hover|:active', selector()) )
+
+      // remove from options
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+
+      // apply hack
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+
+    // throw error otherwise
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
 
   // set animation …
 

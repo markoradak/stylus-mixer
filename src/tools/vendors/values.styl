@@ -8,51 +8,53 @@
  *         Uses information from 'support.json'.
  */
 
-// cursor
-cursor()
+if auto-prefix
 
-  // print unprefixed
-  cursor arguments
+  // cursor
+  cursor()
 
-  // create string
-  args = create-string(arguments)
+    // print unprefixed
+    cursor arguments
 
-  // zoom
-  if match('zoom?', args)
+    // create string
+    args = create-string(arguments)
 
-    // print prefixed
+    // zoom
+    if match('zoom?', args)
 
-    if prefix-webkit('cursor-zoom')
-      cursor create-val('-webkit-', args)
+      // print prefixed
 
-    if prefix-moz('cursor-zoom')
-      cursor create-val('-moz-', args)
+      if prefix-webkit('cursor-zoom')
+        cursor create-val('-webkit-', args)
 
-    if prefix-ms('cursor-zoom')
-      cursor create-val('-ms-', args)
+      if prefix-moz('cursor-zoom')
+        cursor create-val('-moz-', args)
 
-    if prefix-o('cursor-zoom')
-      cursor create-val('-o-', args)
+      if prefix-ms('cursor-zoom')
+        cursor create-val('-ms-', args)
 
-    // fallback
-    cursor crosshair
+      if prefix-o('cursor-zoom')
+        cursor create-val('-o-', args)
 
-  // grab
-  if match('grab', args)
+      // fallback
+      cursor crosshair
 
-    // print prefixed
+    // grab
+    if match('grab', args)
 
-    if prefix-webkit('cursor-grab')
-      cursor create-val('-webkit-', args)
+      // print prefixed
 
-    if prefix-moz('cursor-grab')
-      cursor create-val('-moz-', args)
+      if prefix-webkit('cursor-grab')
+        cursor create-val('-webkit-', args)
 
-    if prefix-ms('cursor-grab')
-      cursor create-val('-ms-', args)
+      if prefix-moz('cursor-grab')
+        cursor create-val('-moz-', args)
 
-    if prefix-o('cursor-grab')
-      cursor create-val('-o-', args)
+      if prefix-ms('cursor-grab')
+        cursor create-val('-ms-', args)
 
-    // fallback
-    cursor move
+      if prefix-o('cursor-grab')
+        cursor create-val('-o-', args)
+
+      // fallback
+      cursor move

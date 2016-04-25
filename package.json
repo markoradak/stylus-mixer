@@ -13,7 +13,7 @@
     "functions"
   ],
   "scripts": {
-    "test": "stylus -w --sourcemap-inline tests/*",
+    "test": "stylus -w tests/*.styl",
     "build": "node src/build.js"
   },
   "devDependencies": {

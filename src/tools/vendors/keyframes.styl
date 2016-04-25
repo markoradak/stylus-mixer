@@ -8,18 +8,24 @@
  *         Uses information from 'support.json'.
  */
 
-// all
-if prefix-webkit('animation') && prefix-moz('animation')
-  vendors = webkit moz official
+if auto-prefix
 
-// webkit only
-else if prefix-webkit('animation') && !prefix-moz('animation')
-  vendors = webkit official
+  // all
+  if prefix-webkit('animation') && prefix-moz('animation')
+    vendors = webkit moz official
 
-// moz only
-else if !prefix-webkit('animation') && prefix-moz('animation')
-  vendors = moz official
+  // webkit only
+  else if prefix-webkit('animation') && !prefix-moz('animation')
+    vendors = webkit official
 
-// unprefixed
+  // moz only
+  else if !prefix-webkit('animation') && prefix-moz('animation')
+    vendors = moz official
+
+  // unprefixed
+  else
+    vendors = official
+
+// reset if auto-prefix is false
 else
   vendors = official

@@ -1,23 +1,4 @@
-@require '../index.styl'
-
-body
-  margin 0
-  display flex
-  height 100vh
-  align-items center
-  justify-content center
-  background white
+@require './src/index.styl'
 
 .box
-  font-family sans-serif
-  font-size 3em
-  padding 10px 20px
-  background-color $squeezed-lime
-  color white
-
-  &:hover
-    cursor pointer
-    background lighten($squeezed-lime, 20%)
-
-  &:active
-    spring-in-place 250ms, 5, 9, translateX(-500px)
+  animate 1000ms, scale(1) translateX(1000px) opacity(1)

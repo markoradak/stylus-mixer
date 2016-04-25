@@ -1,84 +1,98 @@
-transform()
+/**
+ * Transform (transform.styl)
+ * --------------------------
+ * @author Marko Radak <@iammarkoradak>
+ * @since  0.1.0
+ * @desc   Handles 'transform' property
+ *         separately from props function,
+ *         as 'transform' is the only prop
+ *         that can appear both as a prop
+ *         and a value - in 'transition'
+ */
 
-  // print prefixed
+if auto-prefix
 
-  if prefix-webkit('transform')
-    -webkit-transform arguments
+  transform()
 
-  if prefix-moz('transform')
-    -moz-transform arguments
+    // print prefixed
 
-  if prefix-ms('transform')
-    -ms-transform arguments
+    if prefix-webkit('transform')
+      -webkit-transform arguments
 
-  if prefix-o('transform')
-    -o-transform arguments
+    if prefix-moz('transform')
+      -moz-transform arguments
 
-  // print unprefixed
-  transform arguments
+    if prefix-ms('transform')
+      -ms-transform arguments
 
-transition()
+    if prefix-o('transform')
+      -o-transform arguments
 
-  // create transition function
-  getTransitionValue()
+    // print unprefixed
+    transform arguments
 
-    // iterate through transition values
-    values = ()
-    for argument in arguments
+  transition()
 
-      // iterate through each transition value bit
-      argValues = ()
-      for arg in argument
+    // create transition function
+    getTransitionValue()
 
-        // create test argument
-        testArg = create-string(arg)
+      // iterate through transition values
+      values = ()
+      for argument in arguments
 
-        // add vendor prefix if transform
-        if (testArg == 'transform()')
-          argVal = create-val(vendorPrefix, 'transform')
+        // iterate through each transition value bit
+        argValues = ()
+        for arg in argument
 
-        // continue otherwise
-        else
-          argVal = arg
+          // create test argument
+          testArg = create-string(arg)
 
-        // push each transition value
-        push(argValues, argVal)
+          // add vendor prefix if transform
+          if (testArg == 'transform()')
+            argVal = create-val(vendorPrefix, 'transform')
 
-      // push final transition value
-      composedValue = create-block(argValues)
-      push(values, composedValue)
+          // continue otherwise
+          else
+            argVal = arg
 
-    // create initial arguments test
-    testArguments = '"' + arguments '"'
+          // push each transition value
+          push(argValues, argVal)
 
-    // create list if arguments contain more than 1 value pair
-    if (match('(?![^(]*\)),', testArguments))
-      transitionValue = create-list(values)
+        // push final transition value
+        composedValue = create-block(argValues)
+        push(values, composedValue)
 
-    // otherwise create block
+      // create initial arguments test
+      testArguments = '"' + arguments '"'
+
+      // create list if arguments contain more than 1 value pair
+      if (match('(?![^(]*\)),', testArguments))
+        transitionValue = create-list(values)
+
+      // otherwise create block
+      else
+        transitionValue = create-block(values)
+
+    // print prefixed
+
+    if prefix-webkit('transition')
+      vendorPrefix = '-webkit-'
+      -webkit-transition getTransitionValue(arguments)
+
+    if prefix-moz('transition')
+      vendorPrefix = '-moz-'
+      -moz-transition getTransitionValue(arguments)
+
+    if prefix-ms('transition')
+      vendorPrefix = '-ms-'
+      -ms-transition getTransitionValue(arguments)
+
+    if prefix-o('transition')
+      vendorPrefix = '-o-'
+      -o-transition getTransitionValue(arguments)
+
     else
-      transitionValue = create-block(values)
+      vendorPrefix = ''
 
-  // print prefixed
-
-  if prefix-webkit('transition')
-    vendorPrefix = '-webkit-'
-    -webkit-transition getTransitionValue(arguments)
-
-  if prefix-moz('transition')
-    vendorPrefix = '-moz-'
-    -moz-transition getTransitionValue(arguments)
-
-  if prefix-ms('transition')
-    vendorPrefix = '-ms-'
-    -ms-transition getTransitionValue(arguments)
-
-  if prefix-o('transition')
-    vendorPrefix = '-o-'
-    -o-transition getTransitionValue(arguments)
-
-  else
-    vendorPrefix = ''
-
-  // print unprefixed
-  transition getTransitionValue(arguments)
+    // print unprefixed
+    transition getTransitionValue(arguments)

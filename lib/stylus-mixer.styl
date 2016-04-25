@@ -67,14 +67,6 @@ create-list()
   unquote( join(', ', arguments) )
 create-object()
   convert( join('.', arguments) )
-if prefix-webkit('animation') && prefix-moz('animation')
-  vendors = webkit moz official
-else if prefix-webkit('animation') && !prefix-moz('animation')
-  vendors = webkit official
-else if !prefix-webkit('animation') && prefix-moz('animation')
-  vendors = moz official
-else
-  vendors = official
 vendors-list = webkit, moz, ms, o
 -vendor()
   prop = called-from[0]
@@ -179,6 +171,14 @@ cursor()
     if prefix-o('cursor-grab')
       cursor create-val('-o-', args)
     cursor move
+if prefix-webkit('animation') && prefix-moz('animation')
+  vendors = webkit moz official
+else if prefix-webkit('animation') && !prefix-moz('animation')
+  vendors = webkit official
+else if !prefix-webkit('animation') && prefix-moz('animation')
+  vendors = moz official
+else
+  vendors = official
 if legacySupport
   -bg()
     for argument in arguments

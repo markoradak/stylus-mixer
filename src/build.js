@@ -114,3 +114,6 @@ function stripLib() {
 
 // execute deasynchronously
 when( concatSrc ).then( stripLib );
+
+// log done
+console.log('> all done \n')

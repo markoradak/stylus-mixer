@@ -663,17 +663,15 @@ random(min,max)
   return floor( math(0, 'random')*(max - min + 1) + min )
 animate(options, keyframes...)
   optionsCheck = join(', ', options)
+  customNameAvailable = true
   if (
     match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
-  else
-    customNameAvailable = true
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
-  else
-    continuousAvailable = false
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
   else
     selector = selector()
@@ -692,21 +690,22 @@ animate(options, keyframes...)
         animation name 0ms 100ms
     else
       error('continuous is available only for :hover and :active pseudo selectors')
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
   else
     animation name options
   @keyframes {name}
     for keyframe, n in keyframes
       keyframeCheck = join(', ', keyframe)
+      percentageAvailable = false
       if ( match('^\d', keyframeCheck) )
         percentageAvailable = true
-      else
-        percentageAvailable = false
-      if ( match('translate|rotate|scale|skew', keyframeCheck) )
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
-      else
-        transformAvailable = false
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
       if (percentageAvailable == true)
         percentage = keyframe[0]
       else
@@ -716,34 +715,43 @@ animate(options, keyframes...)
           percentage = 0%
       {percentage}
         transformProps = {}
+        filterProps = {}
         for prop, n in keyframe
           propCheck = join(', ', prop)
+          isPercentage = false
           if ( match('^\d', propCheck) )
             isPercentage = true
-          else
-            isPercentage = false
-          if ( match('translate|rotate|scale|skew', propCheck) )
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
-          else
-            isTransform = false
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+          isEasing = false
           if ( match('ease|cubic-bezier', propCheck) )
             isEasing = true
+          if ( isTransform )
+            transformProps[n] = prop
           else
-            isEasing = false
-          if (isTransform == true)
-              transformProps[n] = prop
-          if (isEasing == true)
+            transformProps[n] = unquote('')
+          if ( isFilter )
+            filterProps[n] = prop
+          else
+            filterProps[n] = unquote('')
+          if ( isEasing )
             animation-timing-function prop
-          if (isPercentage == false && isTransform == false && isEasing == false)
+          if ( !isPercentage && !isTransform && !isFilter && !isEasing )
             regularProp = split('(', '' + prop)
             regularValue = split(')', '' + regularProp[1])
             printProp = unquote(regularProp[0])
             printValue = unquote(regularValue[0])
             {printProp} printValue
-        if (transformAvailable == true && percentageAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[1])
-        else if (transformAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[0])
+        msg = join(' ', transformProps)
+        warn(msg)
+        if ( transformAvailable )
+          transform transformProps
+        if ( filterAvailable )
+          filter filterProps
 animated = animate
 background-gradient(options, origin, colors...)
   startColor = colors[0][0]
@@ -901,17 +909,15 @@ size()
     height arguments[1]
 spring-from(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
+  customNameAvailable = true
   if (
     match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
-  else
-    customNameAvailable = true
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
-  else
-    continuousAvailable = false
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
   else
     selector = selector()
@@ -930,7 +936,7 @@ spring-from(options, strength, elasticity, props)
         animation name 0ms 100ms
     else
       error('continuous is available only for :hover and :active pseudo selectors')
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
   else
     animation name options
@@ -939,65 +945,85 @@ spring-from(options, strength, elasticity, props)
   steps = strength
   @keyframes {name}
     for step, n in 0...steps
-      percentage = 100 / steps * step * 1%
-      propsCheck = join(', ', props)
-      if ( match('translate|rotate|scale|skew', propsCheck) )
+      percentage = 100 / steps * step
+      percentage = round( percentage, 2 )
+      percentage = percentage * 1%
+      keyframeCheck = join(', ', props)
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
-      else
-        transformAvailable = false
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
       {percentage}
         transformProps = {}
+        filterProps = {}
         for prop, n in props
           propCheck = join(', ', prop)
-          if ( match('translate|rotate|scale|skew', propCheck) )
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
-          else
-            isTransform = false
-          if (isTransform == true)
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+          if ( isTransform )
             split = split('(', '' + prop)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
-            newValue = transformValue * (coefficient ** step)
-            if (split[0] == 'scale' && percentage != '0%')
-              eq = strength * 4
-              if ( transformValue <= 1 )
-                inverser = \
-                  ( (1 - transformValue) * (eq - (eq * transformValue)) )
-                newValue = 1 - ( newValue * inverser )
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+            if ( originalValue == null )
+              if ( split[0] == 'scale' )
+                originalValue = 1
               else
-                inverser = \
-                  ( (1 - transformValue) * (eq - (eq * transformValue)) ) * (2 - transformValue)
-                newValue = 1 + ( newValue * inverser )
+                originalValue = 0
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
+              transformValue = 0.01
+            newValue = originalValue - ((transformValue - originalValue) * (coefficient ** step) * (-1))
+            if (split[0] == 'scale')
+              if ( transformValue <= 1 )
+                newValue = originalValue + ((transformValue - originalValue) * (coefficient ** step))
             newValue = round( newValue, 2)
             newProp = join('', split[0], '(', newValue, ')')
-            transformProps[n] = newProp
+            transformProps[n] = unquote(newProp)
           else
+            transformProps[n] = unquote('')
             if ( percentage == '0%' )
-              regularProp = split('(', '' + prop)
-              regularValue = split(')', '' + regularProp[1])
-              printProp = unquote(regularProp[0])
-              printValue = unquote(regularValue[0])
-              {printProp} printValue
+              if ( isFilter )
+                filterProps[n] = prop
+              else
+                filterProps[n] = unquote('')
+                regularProp = split('(', '' + prop)
+                regularValue = split(')', '' + regularProp[1])
+                printProp = unquote(regularProp[0])
+                printValue = unquote(regularValue[0])
+                {printProp} printValue
             half = ceil(steps/2)
             if ( step == half )
-              regularProp = split('(', '' + prop)
-              printProp = unquote(regularProp[0])
-              {printProp} inherit
-        if (transformAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[0])
+              if ( isFilter )
+                filterProps = unquote('inherit')
+              else
+                regularProp = split('(', '' + prop)
+                printProp = unquote(regularProp[0])
+                {printProp} inherit
+        if ( transformAvailable )
+          transform transformProps
+        if ( filterAvailable && length(filterProps) > 0 )
+          filter filterProps
 spring-in-place(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
+  customNameAvailable = true
   if (
     match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
-  else
-    customNameAvailable = true
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
-  else
-    continuousAvailable = false
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
   else
     selector = selector()
@@ -1016,7 +1042,7 @@ spring-in-place(options, strength, elasticity, props)
         animation name 0ms 100ms
     else
       error('continuous is available only for :hover and :active pseudo selectors')
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
   else
     animation name options
@@ -1025,54 +1051,78 @@ spring-in-place(options, strength, elasticity, props)
   steps = strength
   @keyframes {name}
     for step, n in 1..(steps - 1)
-      percentage = 100 / steps * step * 1%
-      propsCheck = join(', ', props)
-      if ( match('translate|rotate|scale|skew', propsCheck) )
+      percentage = 100 / steps * step
+      percentage = round( percentage, 2 )
+      percentage = percentage * 1%
+      keyframeCheck = join(', ', props)
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
-      else
-        transformAvailable = false
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
       {percentage}
         transformProps = {}
+        filterProps = {}
         for prop, n in props
           propCheck = join(', ', prop)
-          if ( match('translate|rotate|scale|skew', propCheck) )
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
-          else
-            isTransform = false
-          if (isTransform == true)
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+          if ( isTransform )
             split = split('(', '' + prop)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
-            newValue = transformValue - (transformValue * (coefficient ** step)) - (transformValue - 1)
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+            if ( originalValue == null )
+              if ( split[0] == 'scale' )
+                originalValue = 1
+              else
+                originalValue = 0
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
+              transformValue = 0.01
+            newValue = originalValue - ((originalValue - transformValue) * (coefficient ** step) * (-1)) * 2
             if (split[0] == 'scale')
               if ( transformValue <= 1 )
-                newValue = transformValue + (transformValue * (coefficient ** step)) - (transformValue - 1)
+                newValue = originalValue + ((originalValue - transformValue) * (coefficient ** step)) * 2
             newValue = round( newValue, 2)
             newProp = join('', split[0], '(', newValue, ')')
-            transformProps[n] = newProp
+            transformProps[n] = unquote(newProp)
           else
+            transformProps[n] = unquote('')
             half = floor(steps/2)
             if ( step == half )
-              regularProp = split('(', '' + prop)
-              regularValue = split(')', '' + regularProp[1])
-              printProp = unquote(regularProp[0])
-              printValue = unquote(regularValue[0])
-              {printProp} printValue
-        if (transformAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[0])
+              if ( isFilter )
+                filterProps[n] = prop
+              else
+                filterProps[n] = unquote('')
+                regularProp = split('(', '' + prop)
+                regularValue = split(')', '' + regularProp[1])
+                printProp = unquote(regularProp[0])
+                printValue = unquote(regularValue[0])
+                {printProp} printValue
+        if ( transformAvailable )
+          transform transformProps
+        if ( filterAvailable && length(filterProps) > 0 )
+          filter filterProps
 spring-to(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
+  customNameAvailable = true
   if (
     match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
-  else
-    customNameAvailable = true
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
-  else
-    continuousAvailable = false
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
   else
     selector = selector()
@@ -1094,7 +1144,7 @@ spring-to(options, strength, elasticity, props)
         animation name 0ms 100ms
     else
       error('continuous is available only for :hover and :active pseudo selectors')
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
   else
     animation name options
@@ -1103,44 +1153,69 @@ spring-to(options, strength, elasticity, props)
   steps = strength
   @keyframes {name}
     for step, n in 1..steps
-      percentage = 100 / steps * step * 1%
-      propsCheck = join(', ', props)
-      if ( match('translate|rotate|scale|skew', propsCheck) )
+      percentage = 100 / steps * step
+      percentage = round( percentage, 2 )
+      percentage = percentage * 1%
+      keyframeCheck = join(', ', props)
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
-      else
-        transformAvailable = false
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
       {percentage}
         transformProps = {}
+        filterProps = {}
         for prop, n in props
           propCheck = join(', ', prop)
-          if ( match('translate|rotate|scale|skew', propCheck) )
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
-          else
-            isTransform = false
-          if (isTransform == true)
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+          if ( isTransform )
             split = split('(', '' + prop)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
-            newValue = transformValue - (transformValue * (coefficient ** step))
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+            if ( originalValue == null )
+              if ( split[0] == 'scale' )
+                originalValue = 1
+              else
+                originalValue = 0
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '100%')
+              transformValue = 0.01
+            newValue = transformValue - ((originalValue - transformValue) * (coefficient ** step) * (-1))
             if (split[0] == 'scale')
               if ( transformValue <= 1 )
-                newValue = transformValue + (transformValue * (coefficient ** step))
-                newValue = newValue
+                newValue = transformValue + ((originalValue - transformValue) * (coefficient ** step))
             if ( percentage == '100%' )
               newValue = transformValue
             newValue = round( newValue, 2)
             newProp = join('', split[0], '(', newValue, ')')
-            transformProps[n] = newProp
+            transformProps[n] = unquote(newProp)
           else
+            transformProps[n] = unquote('')
             half = floor(steps/2)
             if ( step >= half )
-              regularProp = split('(', '' + prop)
-              regularValue = split(')', '' + regularProp[1])
-              printProp = unquote(regularProp[0])
-              printValue = unquote(regularValue[0])
-              {printProp} printValue
-        if (transformAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[0])
+              if ( isFilter )
+                filterProps[n] = prop
+              else
+                filterProps[n] = unquote('')
+                regularProp = split('(', '' + prop)
+                regularValue = split(')', '' + regularProp[1])
+                printProp = unquote(regularProp[0])
+                printValue = unquote(regularValue[0])
+                {printProp} printValue
+        if ( transformAvailable )
+          transform transformProps
+        if ( filterAvailable && length(filterProps) > 0 )
+          filter filterProps
 states(options, props...)
   if length(options) > 1
     type = options[0]

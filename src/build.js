@@ -8,6 +8,17 @@
  *         comments, and removes empty lines.
  */
 
+// require 'fs'
+var exec = require('child_process').exec;
+
+// flush old data
+exec("rm -rf lib/data && mkdir lib/data", function() {
+
+  // copy new data
+  exec("cp src/internals/config/data/config.json lib/data && cp src/internals/support/data/support.json lib/data")
+
+});
+
 // list library requirements
 var src = [
   './src/internals/config/config.styl',

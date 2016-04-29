@@ -23,5 +23,5 @@
   "dependencies": {
     "stylus": "^0.54.2"
   },
-  "main": "lib/stylus-mixer.js"a
+  "main": "lib/stylus-mixer.js"
 }

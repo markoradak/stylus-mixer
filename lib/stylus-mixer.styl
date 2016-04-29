@@ -1,4 +1,4 @@
-config = json('./lib/data/config.json', { hash: true })
+config = json('data/config.json', { hash: true })
 auto-prefix ?= config.auto-prefix
 chrome-min  ?= config.browsers.chrome-min
 firefox-min ?= config.browsers.firefox-min
@@ -12,7 +12,7 @@ auto-normalize ?= config.auto-normalize
 tablet-breakpoint ?= config.tablet-breakpoint
 mobile-breakpoint ?= config.mobile-breakpoint
 overwrite-colors ?= config.overwrite-colors
-support = json('./lib/data/support.json', { hash: true })
+support = json('data/support.json', { hash: true })
 legacySupport = ie-min < 9
 handheldDevices = unquote('only screen and (max-device-width: 1024px)')
 prefix-webkit()

@@ -24,25 +24,21 @@ animate(options, keyframes...)
   optionsCheck = join(', ', options)
 
   // check if options have custom name set
+  customNameAvailable = true
   if (
     match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
 
-  else
-    customNameAvailable = true
-
   // check if options contain 'continuous' option
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
 
-  else
-    continuousAvailable = false
-
-  // set name
+  // set name …
 
   // use from options if available
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
 
   // otherwise - create from selector
@@ -82,9 +78,8 @@ animate(options, keyframes...)
   // set animation …
 
   // if custom name available
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
-
   else
     animation name options
 
@@ -98,18 +93,19 @@ animate(options, keyframes...)
       keyframeCheck = join(', ', keyframe)
 
       // check if keyframe value starts with a number
+      percentageAvailable = false
       if ( match('^\d', keyframeCheck) )
         percentageAvailable = true
 
-      else
-        percentageAvailable = false
-
       // check if keyframe value contains transform
-      if ( match('translate|rotate|scale|skew', keyframeCheck) )
+      transformAvailable = false
+      if ( match(' translate| rotate| scale| skew', keyframeCheck) )
         transformAvailable = true
 
-      else
-        transformAvailable = false
+      // check if keyframe value contains transform
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
 
       // read percentage
       if (percentageAvailable == true)
@@ -132,6 +128,9 @@ animate(options, keyframes...)
         // define transform hash
         transformProps = {}
 
+        // define filter hash
+        filterProps = {}
+
         // loop through keyframe props
         for prop, n in keyframe
 
@@ -139,36 +138,50 @@ animate(options, keyframes...)
           propCheck = join(', ', prop)
 
           // check if prop value starts with a number
+          isPercentage = false
           if ( match('^\d', propCheck) )
             isPercentage = true
 
-          else
-            isPercentage = false
-
           // check if prop value contains transform
-          if ( match('translate|rotate|scale|skew', propCheck) )
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
 
-          else
-            isTransform = false
+            msg = join(' ', 'transform:', prop)
+            warn(msg)
+
+          // check if prop value contains filter
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+
+            msg = join(' ', 'filter:', prop)
+            warn(msg)
 
           // check if prop value contains easing
+          isEasing = false
           if ( match('ease|cubic-bezier', propCheck) )
             isEasing = true
 
+          // append prop to transform hash (if transform)
+          if ( isTransform )
+            transformProps[n] = prop
           else
-            isEasing = false
+            transformProps[n] = unquote('')
 
           // append prop to transform hash (if transform)
-          if (isTransform == true)
-              transformProps[n] = prop
+          if ( isFilter )
+            filterProps[n] = prop
+          else
+            filterProps[n] = unquote('')
+
 
           // add timing function (if easing)
-          if (isEasing == true)
+          if ( isEasing )
             animation-timing-function prop
 
           // add prop if none of the above (else condition escaping percentage)
-          if (isPercentage == false && isTransform == false && isEasing == false)
+          if ( !isPercentage && !isTransform && !isFilter && !isEasing )
 
             // split prop and value
             regularProp = split('(', '' + prop)
@@ -181,13 +194,24 @@ animate(options, keyframes...)
             // add
             {printProp} printValue
 
+        msg = join(' ', filterProps)
+        warn(msg)
+
         // add transform props where percentage is available
-        if (transformAvailable == true && percentageAvailable == true)
+        if ( transformAvailable && percentageAvailable )
           transform unquote(split('{} ', '' + transformProps)[1])
 
         // add transform props where percentage is unavailable
-        else if (transformAvailable == true)
+        if ( transformAvailable )
           transform unquote(split('{} ', '' + transformProps)[0])
+
+        // add filter props where percentage is available
+        if ( filterAvailable && percentageAvailable )
+          filter unquote(split('{} ', '' + filterProps)[1])
+
+        // add transform props where percentage is unavailable
+        if ( filterAvailable )
+          filter unquote(split('{} ', '' + filterProps)[0])
 
 // alias
 animated = animate

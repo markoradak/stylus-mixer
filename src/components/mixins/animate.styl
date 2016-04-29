@@ -102,7 +102,7 @@ animate(options, keyframes...)
       if ( match(' translate| rotate| scale| skew', keyframeCheck) )
         transformAvailable = true
 
-      // check if keyframe value contains transform
+      // check if keyframe value contains filter
       filterAvailable = false
       if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
         filterAvailable = true
@@ -147,16 +147,10 @@ animate(options, keyframes...)
           if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
             isTransform = true
 
-            msg = join(' ', 'transform:', prop)
-            warn(msg)
-
           // check if prop value contains filter
           isFilter = false
           if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
             isFilter = true
-
-            msg = join(' ', 'filter:', prop)
-            warn(msg)
 
           // check if prop value contains easing
           isEasing = false
@@ -175,7 +169,6 @@ animate(options, keyframes...)
           else
             filterProps[n] = unquote('')
 
-
           // add timing function (if easing)
           if ( isEasing )
             animation-timing-function prop
@@ -193,9 +186,6 @@ animate(options, keyframes...)
 
             // add
             {printProp} printValue
-
-        msg = join(' ', filterProps)
-        warn(msg)
 
         // add transform props
         if ( transformAvailable )

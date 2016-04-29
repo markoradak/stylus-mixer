@@ -154,6 +154,10 @@ spring-from(options, strength, elasticity, props)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
 
+            // scale(0) normalizer
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
+              transformValue = 0.1
+
             // calculate new value
             newValue = transformValue * (coefficient ** step)
 

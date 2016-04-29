@@ -197,21 +197,13 @@ animate(options, keyframes...)
         msg = join(' ', filterProps)
         warn(msg)
 
-        // add transform props where percentage is available
-        if ( transformAvailable && percentageAvailable )
-          transform unquote(split('{} ', '' + transformProps)[1])
-
-        // add transform props where percentage is unavailable
+        // add transform props
         if ( transformAvailable )
-          transform unquote(split('{} ', '' + transformProps)[0])
+          transform transformProps
 
-        // add filter props where percentage is available
-        if ( filterAvailable && percentageAvailable )
-          filter unquote(split('{} ', '' + filterProps)[1])
-
-        // add transform props where percentage is unavailable
+        // add filter props
         if ( filterAvailable )
-          filter unquote(split('{} ', '' + filterProps)[0])
+          filter filterProps
 
 // alias
 animated = animate

@@ -24,25 +24,21 @@ spring-in-place(options, strength, elasticity, props)
   optionsCheck = join(', ', options)
 
   // check if options have custom name set
+  customNameAvailable = true
   if (
     match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
   )
     customNameAvailable = false
 
-  else
-    customNameAvailable = true
-
   // check if options contain 'continuous' option
+  continuousAvailable = false
   if ( match('continuous', optionsCheck) )
     continuousAvailable = true
-
-  else
-    continuousAvailable = false
 
   // set name …
 
   // use from options if available
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     name = options[0]
 
   // otherwise - create from selector
@@ -82,7 +78,7 @@ spring-in-place(options, strength, elasticity, props)
   // set animation …
 
   // if custom name available
-  if (customNameAvailable == true)
+  if ( customNameAvailable )
     animation options
 
   else
@@ -107,17 +103,17 @@ spring-in-place(options, strength, elasticity, props)
     for step, n in 1..(steps - 1)
 
       // create percentage number
-      percentage = 100 / steps * step * 1%
+      percentage = 100 / steps * step
+      percentage = round( percentage, 2 )
+      percentage = percentage * 1%
 
       // parse keyframe value
       propsCheck = join(', ', props)
 
       // check if keyframe value contains transform
+      transformAvailable = false
       if ( match('translate|rotate|scale|skew', propsCheck) )
         transformAvailable = true
-
-      else
-        transformAvailable = false
 
       // create percentage
       {percentage}
@@ -132,14 +128,12 @@ spring-in-place(options, strength, elasticity, props)
           propCheck = join(', ', prop)
 
           // check if prop value contains transform
+          isTransform = false
           if ( match('translate|rotate|scale|skew', propCheck) )
             isTransform = true
 
-          else
-            isTransform = false
-
           // append prop to transform hash (if transform)
-          if (isTransform == true)
+          if ( isTransform )
 
             // split prop and value
             split = split('(', '' + prop)
@@ -165,10 +159,13 @@ spring-in-place(options, strength, elasticity, props)
             newProp = join('', split[0], '(', newValue, ')')
 
             // push new prop
-            transformProps[n] = newProp
+            transformProps[n] = unquote(newProp)
 
           // print regular prop otherwise
           else
+
+            // push empty transform prop
+            transformProps[n] = unquote('')
 
             // get steps halfway
             half = floor(steps/2)
@@ -188,5 +185,5 @@ spring-in-place(options, strength, elasticity, props)
               {printProp} printValue
 
         // add transform props
-        if (transformAvailable == true)
-          transform unquote(split('{} ', '' + transformProps)[0])
+        if ( transformAvailable )
+          transform transformProps

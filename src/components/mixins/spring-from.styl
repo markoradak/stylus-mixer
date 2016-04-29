@@ -154,39 +154,34 @@ spring-from(options, strength, elasticity, props)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
 
+            // get original value
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+
+            if ( originalValue == null )
+
+              if ( split[0] == 'scale' )
+                originalValue = 1
+              else
+                originalValue = 0
+
             // scale(0) normalizer
             if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
-              transformValue = 0.1
+              transformValue = 0.01
 
             // calculate new value
-            newValue = transformValue * (coefficient ** step)
+            newValue = originalValue - ((transformValue - originalValue) * (coefficient ** step) * (-1))
 
             // handle 'scale' separately
             // as it doesn't default to '0'
-            if (split[0] == 'scale' && percentage != '0%')
+            if (split[0] == 'scale')
 
-              // scale equalizer
-              eq = strength * 4
-
-              // if scaling from less than '1'
               if ( transformValue <= 1 )
-
-                // calculate inverser
-                inverser = \
-                  ( (1 - transformValue) * (eq - (eq * transformValue)) )
-
-                // calculate new value
-                newValue = 1 - ( newValue * inverser )
-
-              // if scaling from more than '1'
-              else
-
-                // calculate inverser
-                inverser = \
-                  ( (1 - transformValue) * (eq - (eq * transformValue)) ) * (2 - transformValue)
-
-                // calculate new value
-                newValue = 1 + ( newValue * inverser )
+                newValue = originalValue + ((transformValue - originalValue) * (coefficient ** step))
+                newValue = newValue
 
             // format new value
             newValue = round( newValue, 2)

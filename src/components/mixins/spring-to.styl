@@ -159,19 +159,33 @@ spring-to(options, strength, elasticity, props)
             transformValue = split(')', '' + split[1])
             transformValue = convert(transformValue)
 
+            // get original value
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+
+            if ( originalValue == null )
+
+              if ( split[0] == 'scale' )
+                originalValue = 1
+              else
+                originalValue = 0
+
             // scale(0) normalizer
-            if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
-              transformValue = 0.1
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '100%')
+              transformValue = 0.01
 
             // calculate new value
-            newValue = transformValue - (transformValue * (coefficient ** step))
+            newValue = transformValue - ((originalValue - transformValue) * (coefficient ** step) * (-1))
 
             // handle 'scale' separately
             // as it doesn't default to '0'
             if (split[0] == 'scale')
 
               if ( transformValue <= 1 )
-                newValue = transformValue + (transformValue * (coefficient ** step))
+                newValue = transformValue + ((originalValue - transformValue) * (coefficient ** step))
                 newValue = newValue
 
             // set original value if

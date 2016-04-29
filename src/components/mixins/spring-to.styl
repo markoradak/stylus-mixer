@@ -116,7 +116,7 @@ spring-to(options, strength, elasticity, props)
 
       // check if keyframe value contains transform
       transformAvailable = false
-      if ( match(' translate| rotate| scale| skew', keyframeCheck) )
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
 
       // check if keyframe value contains filter

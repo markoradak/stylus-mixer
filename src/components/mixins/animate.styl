@@ -99,7 +99,7 @@ animate(options, keyframes...)
 
       // check if keyframe value contains transform
       transformAvailable = false
-      if ( match(' translate| rotate| scale| skew', keyframeCheck) )
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
         transformAvailable = true
 
       // check if keyframe value contains filter
@@ -186,6 +186,9 @@ animate(options, keyframes...)
 
             // add
             {printProp} printValue
+
+        msg = join(' ', transformProps)
+        warn(msg)
 
         // add transform props
         if ( transformAvailable )

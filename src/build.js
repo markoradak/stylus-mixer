@@ -47,6 +47,7 @@ var src = [
   './src/components/mixins/background-gradient.styl',
   './src/components/mixins/clockhand.styl',
   './src/components/mixins/layout.styl',
+  './src/components/mixins/placeholder.styl',
   './src/components/mixins/real-height.styl',
   './src/components/mixins/size.styl',
   './src/components/mixins/spring-from.styl',

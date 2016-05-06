@@ -876,6 +876,17 @@ relative()
   -pos(relative, arguments)
 static()
   -pos(static, arguments)
+placeholder()
+    if selector() == "&"
+        error( "placeholder() must be called from a ruleset!" )
+    &::-webkit-input-placeholder
+        {block}
+    &:-moz-placeholder
+        {block}
+    &::-moz-placeholder
+        {block}
+    &:-ms-input-placeholder
+        {block}
 real-height()
   args = strip-units(arguments)
   height args * 1vh

@@ -746,8 +746,6 @@ animate(options, keyframes...)
             printProp = unquote(regularProp[0])
             printValue = unquote(regularValue[0])
             {printProp} printValue
-        msg = join(' ', transformProps)
-        warn(msg)
         if ( transformAvailable )
           transform transformProps
         if ( filterAvailable )

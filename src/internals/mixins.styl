@@ -28,8 +28,17 @@ create-val()
 create-block()
   unquote( join(' ', arguments) )
 
+create-object()
+  join('', '{', arguments, '}')
+
 create-list()
   unquote( join(', ', arguments) )
 
-create-object()
-  convert( join('.', arguments) )
+create-array()
+  join('', '["', arguments, '"]')
+
+create-key()
+  join('', '"', arguments, '":')
+
+create-value()
+  join('', '"', arguments, '"')

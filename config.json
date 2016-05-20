@@ -1,0 +1,16 @@
+{
+
+  "autoPrefixer": true,
+  "browsers": "> 1%",
+
+  "autoImportant": false,
+
+  "autoReset": false,
+  "autoNormalize": false,
+
+  "tabletBreakpoint": "1024px",
+  "mobileBreakpoint": "768px",
+
+  "overwriteColors": false
+
+}

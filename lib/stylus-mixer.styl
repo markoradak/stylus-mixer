@@ -1,54 +1,3 @@
-config = json('data/config.json', { hash: true })
-auto-prefix ?= config.auto-prefix
-chrome-min  ?= config.browsers.chrome-min
-firefox-min ?= config.browsers.firefox-min
-opera-min   ?= config.browsers.opera-min
-safari-min  ?= config.browsers.safari-min
-ie-min      ?= config.browsers.ie-min
-edge-min    ?= config.browsers.edge-min
-important-everything ?= config.important-everything
-auto-reset     ?= config.auto-reset
-auto-normalize ?= config.auto-normalize
-tablet-breakpoint ?= config.tablet-breakpoint
-mobile-breakpoint ?= config.mobile-breakpoint
-overwrite-colors ?= config.overwrite-colors
-support = json('data/support.json', { hash: true })
-legacySupport = ie-min < 9
-handheldDevices = unquote('only screen and (max-device-width: 1024px)')
-prefix-webkit()
-  chromeVersion = create-object('support', arguments, 'chrome')
-  safariVersion = create-object('support', arguments, 'safari')
-  operaVersion  = create-object('support', arguments, 'opera-w')
-  if \
-    chrome-min < chromeVersion || \
-    safari-min < safariVersion || \
-    opera-min  < operaVersion
-      return true
-  else
-    return false
-prefix-moz()
-  firefoxVersion = create-object('support', arguments, 'firefox')
-  if \
-    firefox-min < firefoxVersion
-      return true
-  else
-    return false
-prefix-ms()
-  ieVersion   = create-object('support', arguments, 'ie')
-  edgeVersion = create-object('support', arguments, 'edge')
-  if \
-    ie-min   < ieVersion || \
-    edge-min < edgeVersion
-      return true
-  else
-    return false
-prefix-o()
-  operaVersion = create-object('support', arguments, 'opera-o')
-  if \
-    opera-min < operaVersion
-      return true
-  else
-    return false
 strip-units()
   unit(arguments, '')
 add-braces()
@@ -63,183 +12,24 @@ create-val()
   unquote( join('', arguments) )
 create-block()
   unquote( join(' ', arguments) )
+create-object()
+  join('', '{', arguments, '}')
 create-list()
   unquote( join(', ', arguments) )
-create-object()
-  convert( join('.', arguments) )
-vendors-list = webkit, moz, ms, o
--vendor()
-  prop = called-from[0]
-  sp = 9999
-  for vendor in vendors-list
-    if vendor == 'webkit'
-      browsers = chrome, safari, opera-w
-    else if vendor == 'moz'
-      browsers = firefox
-    else if vendor == 'ms'
-      browsers = ie, edge
-    else
-      browsers = opera-o
-    conditional = ()
-    for browser in browsers
-      check = join('.', 'support', prop, browser)
-      check = convert(check)
-      min-browser = replace('-w', '', browser)
-      min-browser = replace('-o', '', min-browser)
-      min-browser = join('-', min-browser, 'min')
-      min-browser = convert(min-browser)
-      rule = join(' < ', min-browser, check)
-      push(conditional, rule)
-    if length(conditional) > 1
-      conditional = join('||', conditional)
-    conditional = convert(conditional)
-    prefixedProp = join('', '-', vendor, '-', prop)
-    prefixedProp = unquote(prefixedProp)
-    if conditional
-      {prefixedProp} arguments
-  {prop} arguments
-if auto-prefix
-  for prop in support
-    unless (prop == 'transform')
-      define('' + prop, @() {
-        -vendor(arguments)
-      })
-if auto-prefix
-  transform()
-    if prefix-webkit('transform')
-      -webkit-transform arguments
-    if prefix-moz('transform')
-      -moz-transform arguments
-    if prefix-ms('transform')
-      -ms-transform arguments
-    if prefix-o('transform')
-      -o-transform arguments
-    transform arguments
-  transition()
-    getTransitionValue()
-      values = ()
-      for argument in arguments
-        argValues = ()
-        for arg in argument
-          testArg = create-string(arg)
-          if (testArg == 'transform()')
-            argVal = create-val(vendorPrefix, 'transform')
-          else
-            argVal = arg
-          push(argValues, argVal)
-        composedValue = create-block(argValues)
-        push(values, composedValue)
-      testArguments = '"' + arguments '"'
-      if (match('(?![^(]*\)),', testArguments))
-        transitionValue = create-list(values)
-      else
-        transitionValue = create-block(values)
-    if prefix-webkit('transition')
-      vendorPrefix = '-webkit-'
-      -webkit-transition getTransitionValue(arguments)
-    if prefix-moz('transition')
-      vendorPrefix = '-moz-'
-      -moz-transition getTransitionValue(arguments)
-    if prefix-ms('transition')
-      vendorPrefix = '-ms-'
-      -ms-transition getTransitionValue(arguments)
-    if prefix-o('transition')
-      vendorPrefix = '-o-'
-      -o-transition getTransitionValue(arguments)
-    else
-      vendorPrefix = ''
-    transition getTransitionValue(arguments)
-if auto-prefix
-  cursor()
-    cursor arguments
-    args = create-string(arguments)
-    if match('zoom?', args)
-      if prefix-webkit('cursor-zoom')
-        cursor create-val('-webkit-', args)
-      if prefix-moz('cursor-zoom')
-        cursor create-val('-moz-', args)
-      if prefix-ms('cursor-zoom')
-        cursor create-val('-ms-', args)
-      if prefix-o('cursor-zoom')
-        cursor create-val('-o-', args)
-      cursor crosshair
-    if match('grab', args)
-      if prefix-webkit('cursor-grab')
-        cursor create-val('-webkit-', args)
-      if prefix-moz('cursor-grab')
-        cursor create-val('-moz-', args)
-      if prefix-ms('cursor-grab')
-        cursor create-val('-ms-', args)
-      if prefix-o('cursor-grab')
-        cursor create-val('-o-', args)
-      cursor move
-if auto-prefix
-  if prefix-webkit('animation') && prefix-moz('animation')
-    vendors = webkit moz official
-  else if prefix-webkit('animation') && !prefix-moz('animation')
-    vendors = webkit official
-  else if !prefix-webkit('animation') && prefix-moz('animation')
-    vendors = moz official
-  else
-    vendors = official
-else
-  vendors = official
-if legacySupport
-  -bg()
-    for argument in arguments
-      if (typeof(argument) is 'rgba' || typeof(argument) is 'hsla') && (alpha(argument) < 1)
-        ms-color = argb(argument)
-        hex(argument)
-          hex-value = ('0') ('1') ('2') ('3') ('4') ('5') ('6') ('7') ('8') ('9') ('A') ('B') ('C') ('D') ('E') ('F')
-          unquote(hex-value[floor(argument / 16)] + hex-value[floor(argument % 16)])
-        argb(n)
-          unquote('#')                  +\
-          hex((alpha(argument)) * 255) +\
-          hex(red(argument))           +\
-          hex(green(argument))         +\
-          hex(blue(argument))
-        filter-source = s('progid:DXImageTransform.Microsoft.gradient(startColorstr=%s,endColorstr=%s)', ms-color, ms-color)
-        -ms-filter join('', filter-source)
-  background()
-    background arguments
-    -bg(arguments)
-  background-color()
-    background-color arguments
-    -bg(arguments)
-if legacySupport
-  color()
-    color arguments
-    if (alpha(arguments) < 1)
-      color rgb(arguments)
-if legacySupport
-  opacity()
-    opacity arguments
-    -ms-filter 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' +round(arguments * 100) + ')'
-    & *
-      filter inherit
-add-important()
-  !important in arguments ? unquote('') : !important
--important()
-  prop = called-from
-  {prop} arguments add-important()
-props = all, background, background-attachment, background-blend-mode, background-color, background-image, background-position, background-repeat, border, border-bottom, border-bottom-color, border-bottom-left-radius, border-bottom-right-radius, border-bottom-style, border-bottom-width, border-collapse, border-color, border-left, border-left-color, border-left-style, border-left-width, border-right, border-right-color, border-right-style, border-right-width, border-spacing, border-style, border-top, border-top-color, border-top-left-radius, border-top-right-radius, border-top-style, border-top-width, border-width, break-after, break-before, break-inside, caption-side, clear, clip, color, counter-increment, counter-reset, cursor, direction, display, empty-cells, float, font, font-family, font-size, font-size-adjust, font-stretch, font-style, font-synthesis, font-variant, font-weight, hanging-punctuation, height, isolation, letter-spacing, line-height, list-style, list-style-image, list-style-position, list-style-type, margin, margin-bottom, margin-left, margin-right, margin-top, mask-border, mask-border-mode, mask-border-outset, mask-border-repeat, mask-border-slice, mask-border-source, mask-border-width, mask-clip, mask-composite, mask-image, mask-mode, mask-origin, mask-position, mask-repeat, mask-size, mask-type, max-height, max-width, min-height, min-width, mix-blend-mode, object-fit, object-position, opacity, orphans, outline, outline-color, outline-offset, outline-style, outline-width, overflow, overflow-x, overflow-y, padding, padding-bottom, padding-left, padding-right, padding-top, page-break-after, page-break-before, page-break-inside, pointer-events, position, quotes, resize, shape-image-threshold, shape-margin, shape-outside, table-layout, text-align, text-align-last, text-decoration, text-decoration-color, text-decoration-line, text-decoration-style, text-indent, text-justify, text-rendering, text-shadow, text-transform, unicode-bidi, vertical-align, visibility, white-space, widows, width, will-change, word-break, word-spacing, word-wrap, z-index
-if important-everything
-  for prop in props
-    define('' + prop, @() {
-      -important(arguments)
-    })
-  for prop in support
-    define('' + prop, @() {
-      -vendor(arguments add-important() )
-    })
-  top()
-    top arguments add-important()
-  right()
-    right arguments add-important()
-  bottom()
-    bottom arguments add-important()
-  left()
-    left arguments add-important()
+create-array()
+  join('', '["', arguments, '"]')
+create-key()
+  join('', '"', arguments, '":')
+create-value()
+  join('', '"', arguments, '"')
+__mixer = json('../config.json', { hash: true, leave-strings: true })
+__mixer_keys = \
+  browsers, autoImportant, autoReset, autoNormalize, tabletBreakpoint, mobileBreakpoint, overwrite
+mixer ?= __mixer
+for key in __mixer_keys
+  unless( mixer[key] )
+    mixer[key] = __mixer[key]
+configurePlugins( mixer )
 reset()
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -751,82 +541,6 @@ animate(options, keyframes...)
         if ( filterAvailable )
           filter filterProps
 animated = animate
-background-gradient(options, origin, colors...)
-  startColor = colors[0][0]
-  endColor = colors[-1][0]
-  colors = create-list(colors)
-  if origin is a 'unit'
-    inversedOrigin = origin
-  else
-    inversedOrigin = opposite-position(origin)
-    inversedOrigin = create-prop('to ', inversedOrigin)
-  opt = create-string(options)
-  if match('radial?', opt)
-    prefixedVal = add-braces( join(', ', origin, 'circle', colors) )
-    officialVal = add-braces( join(', ', circle at origin, colors) )
-    if match('repeating?', opt)
-      prefixed = create-prop('repeating-radial-gradient', prefixedVal)
-      official = create-prop('repeating-radial-gradient', officialVal)
-    else
-      prefixed = create-prop('radial-gradient', prefixedVal)
-      official = create-prop('radial-gradient', officialVal)
-  else
-    prefixedVal = add-braces( join(', ', origin, colors) )
-    officialVal = add-braces( join(', ', inversedOrigin, colors) )
-    if match('repeating?', opt)
-      prefixed = create-prop('repeating-linear-gradient', prefixedVal)
-      official = create-prop('repeating-linear-gradient', officialVal)
-    else
-      prefixed = create-prop('linear-gradient', prefixedVal)
-      official = create-prop('linear-gradient', officialVal)
-  webkitGradientFunction()
-    create-prop('-webkit-', prefixed)
-  mozGradientFunction()
-    create-prop('-moz-', prefixed)
-  oGradientFunction()
-    create-prop('-o-', prefixed)
-  gradientFunction()
-    create-prop(official)
-  if (match('mix?', opt))
-    mixAvailable = true
-  else
-    mixAvailable = false
-  mix = linear-gradient(\
-    hsla( mix(startColor,endColor), 0.5),
-    hsla( mix(startColor,endColor), 0.5))
-  webkitMixFunction()
-    create-prop('-webkit-', mix, ',') if mixAvailable
-  mozMixFunction()
-    create-prop('-moz-', mix, ',') if mixAvailable
-  oMixFunction()
-    create-prop('-o-', mix, ',') if mixAvailable
-  mixFunction()
-    create-prop(mix, ',') if mixAvailable
-  if auto-prefix && prefix-webkit('gradient')
-    background webkitMixFunction() webkitGradientFunction()
-  if auto-prefix && prefix-moz('gradient')
-    background mozMixFunction() mozGradientFunction()
-  if auto-prefix && prefix-o('gradient')
-    background oMixFunction() oGradientFunction()
-  background mixFunction() gradientFunction()
-  hex(startColor)
-    hexValue = ('0') ('1') ('2') ('3') ('4') ('5') ('6') ('7') ('8') ('9') ('A') ('B') ('C') ('D') ('E') ('F')
-    unquote(hexValue[floor(startColor / 16)] + hexValue[floor(startColor % 16)])
-  argb(startColor)
-    unquote('#') + hex((alpha(startColor)) * 255) + hex(red(startColor)) + hex(green(startColor)) + hex(blue(startColor))
-  hex(endColor)
-    hexValue = ('0') ('1') ('2') ('3') ('4') ('5') ('6') ('7') ('8') ('9') ('A') ('B') ('C') ('D') ('E') ('F')
-    unquote(hexValue[floor(endColor / 16)] + hexValue[floor(endColor % 16)])
-  argb(endColor)
-    unquote('#') + hex((alpha(endColor)) * 255) + hex(red(endColor)) + hex(green(endColor)) + hex(blue(endColor))
-  ieStartColor = argb(startColor)
-  ieEndColor = argb(endColor)
-  if (origin == top) || (origin == bottom)
-    filterSource = s('progid:DXImageTransform.Microsoft.gradient(start-colorstr=%s,end-colorstr=%s),GradientType=0', ieStartColor, ieEndColor)
-  else
-    filterSource = s('progid:DXImageTransform.Microsoft.gradient(start-colorstr=%s,end-colorstr=%s),GradientType=0', ieStartColor, ieEndColor)
-  if legacySupport
-    -ms-filter add-quotes(filterSource)
 clockhand()
   if length(arguments) > 4
     error("Clockhand property support up to 4 values at a time.")
@@ -888,7 +602,7 @@ placeholder()
 real-height()
   args = strip-units(arguments)
   height args * 1vh
-  @media handheldDevices
+  @media tablet
     ratios = '3/4', '2/3', '10/16', '9/16'
     for ratio in ratios
       @media only screen and \
@@ -1285,49 +999,6 @@ states(options, props...)
 text-background()
   @supports (-webkit-background-clip: text)
     background arguments
-    -webkit-background-clip text
-    -webkit-text-fill-color transparent
-text-gradient(options, origin, colors...)
-  startColor = colors[0][0]
-  endColor = colors[-1][0]
-  colors = create-list(colors)
-  if origin is a 'unit'
-    inversedOrigin = origin
-  else
-    inversedOrigin = opposite-position(origin)
-    inversedOrigin = create-prop('to ', inversedOrigin)
-  opt = create-string(options)
-  if match('radial?', opt)
-    prefixedVal = add-braces( join(', ', origin, 'circle', colors) )
-    officialVal = add-braces( join(', ', circle at origin, colors) )
-    if match('repeating?', opt)
-      prefixed = create-prop('repeating-radial-gradient', prefixedVal)
-      official = create-prop('repeating-radial-gradient', officialVal)
-    else
-      prefixed = create-prop('radial-gradient', prefixedVal)
-      official = create-prop('radial-gradient', officialVal)
-  else
-    prefixedVal = add-braces( join(', ', origin, colors) )
-    officialVal = add-braces( join(', ', inversedOrigin, colors) )
-    if match('repeating?', opt)
-      prefixed = create-prop('repeating-linear-gradient', prefixedVal)
-      official = create-prop('repeating-linear-gradient', officialVal)
-    else
-      prefixed = create-prop('linear-gradient', prefixedVal)
-      official = create-prop('linear-gradient', officialVal)
-  gradientFunction()
-    create-prop(official)
-  if (match('mix?', opt))
-    mixAvailable = true
-  else
-    mixAvailable = false
-  mix = linear-gradient(\
-    hsla( mix(startColor,endColor), 0.5),
-    hsla( mix(startColor,endColor), 0.5))
-  mixFunction()
-    create-prop(mix, ',') if mixAvailable
-  @supports (-webkit-background-clip: text)
-    background mixFunction() gradientFunction()
     -webkit-background-clip text
     -webkit-text-fill-color transparent
 unsplash(size, options...)

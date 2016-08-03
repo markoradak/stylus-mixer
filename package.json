@@ -2,7 +2,7 @@
   "name": "stylus-mixer",
   "version": "0.1.0",
   "description": "Stylus library offering powerfull functions and mixins, as well as advanced auto-prefixing with property lookup, global resets, normalization, and much more.",
-  "author": "Marko Radak <@iammarkoradak> (http://markoradak.com)",
+  "author": "OhLabs™ <@OhLabsIO> (https://ohlabs.io)",
   "license": "MIT",
   "keywords": [
     "stylus",

@@ -1,7 +1,7 @@
 /**
  * Build (build.js)
  * ----------------
- * @author Marko Radak <@iammarkoradak>
+ * @author OhLabs™ <@OhLabsIO> (https://ohlabs.io)
  * @since  0.1.0
  * @desc   Development build script.
  *         Concats all required files, strips

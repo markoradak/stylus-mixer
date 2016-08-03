@@ -16,7 +16,7 @@
  *   em(40px 20px 60px)
  */
 
--convert(size, base)
+__convert(size, base)
 
   // get base
   base = strip-units(base)
@@ -40,8 +40,8 @@
 
 // em
 em(size, base = 16)
-  -convert(size, base)
+  __convert(size, base)
 
 // rem
 rem(size, base = 16)
-  -convert(size, base)
+  __convert(size, base)

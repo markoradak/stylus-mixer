@@ -10,7 +10,7 @@
  *   animate <options>, <keyframe> ...
  *
  * @examples
- *   animate easeOutExpo forwards, translateY(50%)
+ *   animate 1000ms easeOutExpo, translateY(50%)
  *
  *   animate \
  *     name 2000ms infinite easeInOut(50%), \
@@ -194,6 +194,3 @@ animate(options, keyframes...)
         // add filter props
         if ( filterAvailable )
           filter filterProps
-
-// alias
-animated = animate

@@ -587,9 +587,6 @@ relative()
   -pos(relative, arguments)
 static()
   -pos(static, arguments)
-nth()
-  ^[-1]:{arguments}^[-1..-1]
-    {block}
 placeholder()
   if selector() == "&"
     error( "placeholder() must be called from a ruleset!" )
@@ -600,6 +597,9 @@ placeholder()
   &::-moz-placeholder
     {block}
   &:-ms-input-placeholder
+    {block}
+pseudo()
+  ^[-1]:{arguments}^[-1..-1]
     {block}
 real-height()
   args = strip-units(arguments)

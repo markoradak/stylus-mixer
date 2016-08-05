@@ -1,0 +1,16 @@
+/**
+ * Nth (nth.styl)
+ * --------------
+ * @author OhLabs™ <@OhLabsIO> (https://ohlabs.io)
+ * @since  0.1.0
+ * @desc   Better nth-child / nth-of-type. @TODO
+ *         For now handles only nth on pseudo elements.
+ *
+ * @syntax
+ *   +nth([argument])
+ *     <props>
+ */
+
+nth()
+  ^[-1]:{arguments}^[-1..-1]
+    {block}

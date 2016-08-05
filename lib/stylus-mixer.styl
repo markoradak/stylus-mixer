@@ -405,7 +405,7 @@ desktop = join('', 'min-device-width:', desktop)
 desktop = add-braces(desktop)
 desktop = join(' ', scr, desktop)
 desktop = unquote(desktop)
--ease()
+__ease()
   type = called-from
   strength = unit(arguments, '')
   if type == 'easeIn'
@@ -425,13 +425,13 @@ desktop = unquote(desktop)
     y2 = 1
   cubic-bezier(x1, x2, y1, y2)
 easeIn()
-  -ease(arguments)
+  __ease(arguments)
 easeOut()
-  -ease(arguments)
+  __ease(arguments)
 easeInOut()
-  -ease(arguments)
+  __ease(arguments)
 ease = easeInOut
--convert(size, base)
+__convert(size, base)
   base = strip-units(base)
   values = ()
   for index in size
@@ -441,9 +441,9 @@ ease = easeInOut
     push(values, val)
   values
 em(size, base = 16)
-  -convert(size, base)
+  __convert(size, base)
 rem(size, base = 16)
-  -convert(size, base)
+  __convert(size, base)
 percent(value, total)
   value = strip-units(value)
   total = strip-units(total)
@@ -540,7 +540,6 @@ animate(options, keyframes...)
           transform transformProps
         if ( filterAvailable )
           filter filterProps
-animated = animate
 clockhand()
   if length(arguments) > 4
     error("Clockhand property support up to 4 values at a time.")
@@ -588,17 +587,20 @@ relative()
   -pos(relative, arguments)
 static()
   -pos(static, arguments)
+nth()
+  ^[-1]:{arguments}^[-1..-1]
+    {block}
 placeholder()
-    if selector() == "&"
-        error( "placeholder() must be called from a ruleset!" )
-    &::-webkit-input-placeholder
-        {block}
-    &:-moz-placeholder
-        {block}
-    &::-moz-placeholder
-        {block}
-    &:-ms-input-placeholder
-        {block}
+  if selector() == "&"
+    error( "placeholder() must be called from a ruleset!" )
+  &::-webkit-input-placeholder
+    {block}
+  &:-moz-placeholder
+    {block}
+  &::-moz-placeholder
+    {block}
+  &:-ms-input-placeholder
+    {block}
 real-height()
   args = strip-units(arguments)
   height args * 1vh

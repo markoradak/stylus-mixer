@@ -27,6 +27,7 @@ var src = [
   './src/mixins/animate.styl',
   './src/mixins/clockhand.styl',
   './src/mixins/layout.styl',
+  './src/mixins/nth.styl',
   './src/mixins/placeholder.styl',
   './src/mixins/real-height.styl',
   './src/mixins/size.styl',

@@ -24,6 +24,7 @@ var src = [
   './src/functions/em-rem.styl',
   './src/functions/percentage.styl',
   './src/functions/random.styl',
+  './src/functions/transparent.styl',
   './src/mixins/animate.styl',
   './src/mixins/clockhand.styl',
   './src/mixins/layout.styl',

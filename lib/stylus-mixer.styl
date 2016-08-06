@@ -451,6 +451,8 @@ percent(value, total)
 percentage = percent
 random(min,max)
   return floor( math(0, 'random')*(max - min + 1) + min )
+transparent()
+  rgba(arguments[0], arguments[1])
 animate(options, keyframes...)
   optionsCheck = join(', ', options)
   customNameAvailable = true

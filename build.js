@@ -26,6 +26,7 @@ var src = [
   './src/functions/random.styl',
   './src/functions/transparent.styl',
   './src/mixins/animate.styl',
+  './src/mixins/antialias.styl',
   './src/mixins/clockhand.styl',
   './src/mixins/font-face.styl',
   './src/mixins/layout.styl',

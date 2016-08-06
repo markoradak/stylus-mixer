@@ -542,6 +542,9 @@ animate(options, keyframes...)
           transform transformProps
         if ( filterAvailable )
           filter filterProps
+antialias()
+  -webkit-font-smoothing antialiased
+  -moz-osx-font-smoothing grayscale
 clockhand()
   if length(arguments) > 4
     error("Clockhand property support up to 4 values at a time.")

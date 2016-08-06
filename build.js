@@ -27,6 +27,7 @@ var src = [
   './src/functions/transparent.styl',
   './src/mixins/animate.styl',
   './src/mixins/clockhand.styl',
+  './src/mixins/font-face.styl',
   './src/mixins/layout.styl',
   './src/mixins/placeholder.styl',
   './src/mixins/pseudo.styl',

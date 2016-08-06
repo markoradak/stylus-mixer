@@ -562,6 +562,19 @@ clockhand()
     else
       {side} arguments[n] unless arguments[n] == '_'
 trbl = tblr = clockhand
+everything()
+  *
+  *:before
+  *:after
+    {block}
+    &::-webkit-input-placeholder
+      {block}
+    &:-moz-placeholder
+      {block}
+    &::-moz-placeholder
+      {block}
+    &:-ms-input-placeholder
+      {block}
 font-face( name, font-src, weight = false, style = false, formats = local eot woff2 woff truetype svg, svg-font-name = false, local-font-name = false )
   @font-face
     font-family name

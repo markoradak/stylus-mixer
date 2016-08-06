@@ -28,6 +28,7 @@ var src = [
   './src/mixins/animate.styl',
   './src/mixins/antialias.styl',
   './src/mixins/clockhand.styl',
+  './src/mixins/everything.styl',
   './src/mixins/font-face.styl',
   './src/mixins/layout.styl',
   './src/mixins/placeholder.styl',

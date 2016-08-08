@@ -605,19 +605,11 @@ sliderThumb()
   if selector() == "&"
     error( "placeholder() must be called from a ruleset!" )
   &::-webkit-slider-thumb
-    -webkit-appearance none
     {block}
   &::-moz-range-thumb
-    -webkit-appearance none
     {block}
   &::-ms-thumb
-    -webkit-appearance none
     {block}
-  &::-ms-track
-    -webkit-appearance none
-    background transparent
-    border-color transparent
-    color transparent
 sliderTrack()
   if selector() == "&"
     error( "placeholder() must be called from a ruleset!" )

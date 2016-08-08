@@ -41,6 +41,7 @@ var src = [
   './src/mixins/states.styl',
   './src/mixins/text-background.styl',
   './src/mixins/unsplash.styl',
+  './src/mixins/webkit.styl'
 ]
 
 // deasync function …

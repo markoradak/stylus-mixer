@@ -30,6 +30,7 @@ var src = [
   './src/mixins/clockhand.styl',
   './src/mixins/everything.styl',
   './src/mixins/font-face.styl',
+  './src/mixins/input-slider.styl',
   './src/mixins/layout.styl',
   './src/mixins/placeholder.styl',
   './src/mixins/pseudo.styl',

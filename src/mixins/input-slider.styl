@@ -1,0 +1,45 @@
+/**
+ * Input Slider (input-slider.styl)
+ * --------------------------------
+ * @author OhLabs™ <@OhLabsIO> (https://ohlabs.io)
+ * @since  0.1.0
+ * @desc   Outputs vendor prefixes for range thumb / track.
+ *
+ * @syntax
+ *   +placeholder()
+ *     <props>
+ */
+
+sliderThumb()
+
+  if selector() == "&"
+    error( "placeholder() must be called from a ruleset!" )
+
+  &::-webkit-slider-thumb
+    {block}
+  &::-moz-range-thumb
+    {block}
+  &::-ms-thumb
+    {block}
+
+  &::-ms-track
+    background transparent
+    border-color transparent
+    color transparent
+
+sliderTrack()
+
+  if selector() == "&"
+    error( "placeholder() must be called from a ruleset!" )
+
+  &::-ms-track
+    background transparent
+    border-color transparent
+    color transparent
+
+  &::-webkit-slider-runnable-track
+    {block}
+  &::-moz-range-track
+    {block}
+  &::-ms-track
+    {block}

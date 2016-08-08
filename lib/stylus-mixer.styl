@@ -601,6 +601,32 @@ font-face( name, font-src, weight = false, style = false, formats = local eot wo
       svg-name = svg-font-name ? svg-font-name : name
       push( fonts, 'url("' + font-src + '.svg#' + svg-name + '") format("svg")' )
     src unquote( join( ", ", fonts ) )
+sliderThumb()
+  if selector() == "&"
+    error( "placeholder() must be called from a ruleset!" )
+  &::-webkit-slider-thumb
+    {block}
+  &::-moz-range-thumb
+    {block}
+  &::-ms-thumb
+    {block}
+  &::-ms-track
+    background transparent
+    border-color transparent
+    color transparent
+sliderTrack()
+  if selector() == "&"
+    error( "placeholder() must be called from a ruleset!" )
+  &::-ms-track
+    background transparent
+    border-color transparent
+    color transparent
+  &::-webkit-slider-runnable-track
+    {block}
+  &::-moz-range-track
+    {block}
+  &::-ms-track
+    {block}
 -pos(type, args)
   position type
   if length(args) > 4

@@ -1,12 +1,12 @@
 {
 
-  "autoPrefix": false,
+  "autoPrefix": true,
   "browsers": "> 1%",
+
+  "autoImportant": false,
 
   "autoReset": false,
   "autoNormalize": false,
-
-  "autoImportant": false,
 
   "overwriteColors": false
 

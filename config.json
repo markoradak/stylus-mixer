@@ -1,6 +1,6 @@
 {
 
-  "autoPrefix": true,
+  "autoPrefix": false,
   "browsers": "> 1%",
 
   "autoReset": false,

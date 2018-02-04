@@ -1,0 +1,47 @@
+/**
+ * Em-Rem (em-rem.styl)
+ * --------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides function that converts
+ *         pixel to em/rem values on the base
+ *         of 16, if not specified diferently.
+ *
+ * @syntax
+ *   em([n], ?[n])
+ *
+ * @examples
+ *   em(12px, 16px)
+ *   rem(36px)
+ *   em(40px 20px 60px)
+ */
+
+__convert(size, base)
+
+  // get base
+  base = strip-units(base)
+
+  // create hash
+  values = ()
+
+  // iterate
+  for index in size
+
+    // convert
+    val = strip-units(index)
+    val = val/base
+    val = unit(val, called-from)
+
+    // push
+    push(values, val)
+
+  // print
+  values
+
+// em
+em(size, base = 16)
+  __convert(size, base)
+
+// rem
+rem(size, base = 16)
+  __convert(size, base)

@@ -1,0 +1,247 @@
+/**
+ * Spring From (spring-from.styl)
+ * ------------------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides quick, short-hand like syntax
+ *         for animations and keyframes.
+ *
+ * @syntax
+ *   spring-from \
+ *     <options>, <strength>, <elasticity>, <props>
+ *
+ * @examples
+ *   spring-from 1000ms, 5, 5, translateX(-100px)
+ *
+ *   spring-from \
+ *     name 2000ms infinite continuous \
+ *     6, 9, \
+ *     scale(2) opacity(1)
+ */
+
+spring-from(options, strength, elasticity, props)
+
+  // parse options value
+  optionsCheck = join(', ', options)
+
+  // check if options have custom name set
+  customNameAvailable = true
+  if (
+    match('^\d|^cubic|^ease|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
+  )
+    customNameAvailable = false
+
+  // check if options contain 'continuous' option
+  continuousAvailable = false
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+
+  // set name …
+
+  // use from options if available
+  if ( customNameAvailable )
+    name = options[0]
+
+  // otherwise - create from selector
+  else
+    selector = selector()
+    // remove pseudo classes
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    // remove every character before last word
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    // remove any non-alphanumerical character
+    string = replace('\W', ' ', selector)
+    // unquote
+    name = unquote(selector)
+
+  // handle 'continuous' if available
+  if ( continuousAvailable )
+
+    // continue if using within
+    // 'hover' or 'active' selectors
+    if ( match(':hover|:active', selector()) )
+
+      // remove from options
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+
+      // apply hack
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+
+    // throw error otherwise
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
+
+  // set animation …
+
+  // if custom name available
+  if ( customNameAvailable )
+    animation options
+  else
+    animation name options
+
+  // set values …
+
+  // calculate coefficient
+  coefficient = ( (strength * elasticity) + ( (strength + elasticity) / 2 ) - ( (strength + elasticity) / 4 ) / 2 )
+
+  // create decimal
+  coefficient = ( coefficient / (-100) )
+
+  // assign number of steps to strength
+  steps = strength
+
+  // set keyframes
+  @keyframes {name}
+
+    // loop through steps
+    for step, n in 0...steps
+
+      // create percentage number
+      percentage = 100 / steps * step
+      percentage = round( percentage, 2 )
+      percentage = percentage * 1%
+
+      // parse keyframe value
+      keyframeCheck = join(', ', props)
+
+      // check if keyframe value contains transform
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
+        transformAvailable = true
+
+      // check if keyframe value contains transform
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
+
+      // create percentage
+      {percentage}
+
+        // define transform hash
+        transformProps = {}
+
+        // define filter hash
+        filterProps = {}
+
+        // loop through props
+        for prop, n in props
+
+          // parse prop value
+          propCheck = join(', ', prop)
+
+          // check if prop value contains transform
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
+            isTransform = true
+
+          // check if prop value contains filter
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+
+          // append prop to transform hash (if transform)
+          if ( isTransform )
+
+            // split prop and value
+            split = split('(', '' + prop)
+
+            // set transform value
+            transformValue = split(')', '' + split[1])
+            transformValue = convert(transformValue)
+
+            // get original value
+            originalValue = @transform
+            originalValue = split(split[0], '' + originalValue)
+            originalValue = split('(', '' + originalValue[1])
+            originalValue = split(')', '' + originalValue[1])
+            originalValue = convert(originalValue)
+
+            if ( originalValue == null )
+
+              if ( split[0] == 'scale' )
+                originalValue = 1
+              else
+                originalValue = 0
+
+            // scale(0) normalizer
+            if (transformValue == 0 && split[0] == 'scale' && percentage != '0%')
+              transformValue = 0.01
+
+            // calculate new value
+            newValue = originalValue - ((transformValue - originalValue) * (coefficient ** step) * (-1))
+
+            // handle 'scale' separately
+            // as it doesn't default to '0'
+            if (split[0] == 'scale')
+
+              if ( transformValue <= 1 )
+                newValue = originalValue + ((transformValue - originalValue) * (coefficient ** step))
+
+            // format new value
+            newValue = round( newValue, 2)
+
+            // create new prop
+            newProp = join('', split[0], '(', newValue, ')')
+
+            // push new prop
+            transformProps[n] = unquote(newProp)
+
+          // print regular prop otherwise
+          else
+
+            // push empty transform prop
+            transformProps[n] = unquote('')
+
+            // print on start
+            if ( percentage == '0%' )
+
+              if ( isFilter )
+                filterProps[n] = prop
+
+              else
+
+                filterProps[n] = unquote('')
+
+                // split prop and value
+                regularProp = split('(', '' + prop)
+                regularValue = split(')', '' + regularProp[1])
+
+                // unquote
+                printProp = unquote(regularProp[0])
+                printValue = unquote(regularValue[0])
+
+                // print
+                {printProp} printValue
+
+            // get steps halfway
+            half = ceil(steps/2)
+
+            // print on halfway
+            if ( step == half )
+
+              if ( isFilter )
+                filterProps = unquote('inherit')
+
+              else
+
+                // split prop and value
+                regularProp = split('(', '' + prop)
+
+                // unquote
+                printProp = unquote(regularProp[0])
+
+                // print
+                {printProp} inherit
+
+        // add transform props
+        if ( transformAvailable )
+          transform transformProps
+
+        // add filter props
+        if ( filterAvailable && length(filterProps) > 0 )
+          filter filterProps

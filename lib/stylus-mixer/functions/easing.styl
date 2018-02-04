@@ -1,0 +1,62 @@
+/**
+ * Easing (easing.styl)
+ * --------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides custom easing functions,
+ *         that convert percentages into
+ *         cubic beziers.
+ *
+ * @syntax
+ *   ease([n])
+ *
+ * @examples
+ *   easeIn(50%)
+ *   easeOut(20%)
+ *   ease(100%)
+ */
+
+__ease()
+
+  // get type and value
+  type = called-from
+  strength = unit(arguments, '')
+
+  // easeIn
+  if type == 'easeIn'
+    x1 = (strength / 100)
+    x2 = 0
+    y1 = 1
+    y2 = ( (100 - strength) / 100 )
+
+  // easeOut
+  else if type == 'easeOut'
+    x1 = 0
+    x2 = (strength/100)
+    y1 = ( (100 - strength) / 100)
+    y2 = 1
+
+  // easeInOut || ease
+  else
+    x1 = (strength / 100)
+    x2 = 0
+    y1 = ( (100 - strength) / 100 )
+    y2 = 1
+
+  // print
+  cubic-bezier(x1, x2, y1, y2)
+
+// easeIn
+easeIn()
+  __ease(arguments)
+
+// easeOut
+easeOut()
+  __ease(arguments)
+
+// easeInOut
+easeInOut()
+  __ease(arguments)
+
+// alias
+ease = easeInOut

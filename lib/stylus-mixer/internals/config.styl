@@ -1,0 +1,23 @@
+/**
+ * Config (config.styl)
+ * --------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Parses data from 'config.json'.
+ *         Can be overwritten by defining same
+ *         variables before requiring mixer.
+ */
+
+// parse data from 'config.json'
+__mixer = json('../config.json', { hash: true, leave-strings: true })
+
+__mixer_keys = \
+  autoPrefixer, browsers, autoImportant, autoReset, autoNormalize, tabletBreakpoint, mobileBreakpoint, overwriteColors
+
+mixer ?= __mixer
+
+for key in __mixer_keys
+  unless( mixer[key] )
+    mixer[key] = __mixer[key]
+
+configurePlugins( mixer )

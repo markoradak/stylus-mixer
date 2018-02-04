@@ -1,0 +1,76 @@
+/**
+ * Layout (layout.styl)
+ * --------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides quick way of setting position
+ *         properties along with the top, bottom,
+ *         left, right' properties.
+ *
+ * @syntax
+ *   <position> [n] ...(4)
+ *   <position> <side> ...(4)
+ *
+ * @examples
+ *   fixed 0
+ *   fixed top left
+ *   absolute 0 10px 20px
+ *   absolute 20px 10px _ 30px
+ */
+
+// define utility mixin
+-pos(type, args)
+  position type
+
+  // perform check
+  if length(args) > 4
+    error("Position property support up to 4 values at a time.")
+
+  // create string
+  argsString = create-string(args)
+
+  // sides syntax
+  if match('top|bottom|left|right', argsString)
+
+    // iterate
+    for arg in args
+      {arg} 0
+
+  // values syntax
+  else
+
+    // define props
+    sides = top, right, bottom, left
+
+    // iterate
+    for side, n in sides
+      // (top,right,bottom,left)
+      if length(args) == 1
+        {side} args
+      // (top,bottom), (left,right)
+      else if length(args) == 2
+        {side} args[0] if n == 0 || n == 2 unless args[0] == '_'
+        {side} args[1] if n == 1 || n == 3 unless args[1] == '_'
+      // top, (left,right), bottom
+      else if length(args) == 3
+        {side} args[0] if n == 0 unless args[0] == '_'
+        {side} args[1] if n == 1 || n == 3 unless args[1] == '_'
+        {side} args[2] if n == 2 unless args[2] == '_'
+      // top, bottom, left, right
+      else
+        {side} args[n] unless args[n] == '_'
+
+// fixed
+fixed()
+  -pos(fixed, arguments)
+
+// absolute
+absolute()
+  -pos(absolute, arguments)
+
+// relative
+relative()
+  -pos(relative, arguments)
+
+static()
+  -pos(static, arguments)

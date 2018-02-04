@@ -1,8 +1,8 @@
 {
   "name": "stylus-mixer",
-  "version": "0.1.1",
+  "version": "0.2",
   "description": "Stylus library offering powerfull functions and mixins, as well as advanced auto-prefixing with property lookup, global resets, normalization, and much more.",
-  "author": "OhLabs™ <@OhLabsIO> (https://ohlabs.io)",
+  "author": "Marko Radak <mail@markoradak.com>",
   "license": "MIT",
   "keywords": [
     "stylus",
@@ -13,20 +13,24 @@
     "functions"
   ],
   "scripts": {
-    "build": "node build.js"
-  },
-  "peerDependencies": {
-    "stylus": "^0.54.5"
+    "test": "stylus --import index.styl -w tests"
   },
   "devDependencies": {
-    "concat-files": "^0.1.0",
-    "strip-comment": "^1.1.3"
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^8.0.0",
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^15.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "eslint-plugin-react": "^7.0.1",
+    "stylint": "^1.5.9"
   },
   "dependencies": {
-    "poststylus": "^0.2.3",
     "autoprefixer": "^6.3.6",
+    "lodash": "^4.12.0",
     "postcss-safe-important": "^1.0.4",
-    "lodash": "^4.12.0"
+    "poststylus": "^0.2.3",
+    "stylus": "^0.54.5"
   },
   "main": "lib/stylus-mixer.js"
 }

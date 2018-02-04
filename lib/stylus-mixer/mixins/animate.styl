@@ -1,0 +1,196 @@
+/**
+ * Animate (animate.styl)
+ * ----------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides quick, short-hand like syntax
+ *         for animations and keyframes.
+ *
+ * @syntax
+ *   animate <options>, <keyframe> ...
+ *
+ * @examples
+ *   animate 1000ms easeOutExpo, translateY(50%)
+ *
+ *   animate \
+ *     name 2000ms infinite easeInOut(50%), \
+ *     10% scale(1.5) opacity(1), \
+ *     70% scale(0.5) opacity(0.5)
+ */
+
+animate(options, keyframes...)
+
+  // parse options value
+  optionsCheck = join(', ', options)
+
+  // check if options have custom name set
+  customNameAvailable = true
+  if (
+    match('^\d|^ease|^bounce|^elastic|^linear|^infinite|^normal|^alternate|^forwards|^backwards|^both|^steps\(|^continuous', optionsCheck)
+  )
+    customNameAvailable = false
+
+  // check if options contain 'continuous' option
+  continuousAvailable = false
+  if ( match('continuous', optionsCheck) )
+    continuousAvailable = true
+
+  // set name …
+
+  // use from options if available
+  if ( customNameAvailable )
+    name = options[0]
+
+  // otherwise - create from selector
+  else
+    selector = selector()
+    // remove pseudo classes
+    selector = \
+      replace(':before|:after|:hover|:active|:visited|:target', '', selector)
+    // remove every character before last word
+    selector = replace('.*[^a-zA-Z]+', '', selector)
+    // remove any non-alphanumerical character
+    string = replace('\W', ' ', selector)
+    // unquote
+    name = unquote(selector)
+
+  // handle 'continuous' if available
+  if ( continuousAvailable )
+
+    // continue if using within
+    // 'hover' or 'active' selectors
+    if ( match(':hover|:active', selector()) )
+
+      // remove from options
+      options = join(' ', options)
+      options = replace(' continuous|continuous ', '', options)
+      options = unquote(options)
+
+      // apply hack
+      selector = replace(':hover|:active', '', selector())
+      / {selector}
+        animation name 0ms 100ms
+
+    // throw error otherwise
+    else
+      error('continuous is available only for :hover and :active pseudo selectors')
+
+  // set animation …
+
+  // if custom name available
+  if ( customNameAvailable )
+    animation options
+  else
+    animation name options
+
+  // set keyframes
+  @keyframes {name}
+
+    // loop through keyframes
+    for keyframe, n in keyframes
+
+      // parse keyframe value
+      keyframeCheck = join(', ', keyframe)
+
+      // check if keyframe value starts with a number
+      percentageAvailable = false
+      if ( match('^\d', keyframeCheck) )
+        percentageAvailable = true
+
+      // check if keyframe value contains transform
+      transformAvailable = false
+      if ( match('translate|\brotate|\bscale|skew', keyframeCheck) )
+        transformAvailable = true
+
+      // check if keyframe value contains filter
+      filterAvailable = false
+      if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', keyframeCheck) )
+        filterAvailable = true
+
+      // read percentage
+      if (percentageAvailable == true)
+        percentage = keyframe[0]
+
+      // create percentage if unavailable
+      else
+
+        // calculate if more than one keyframe
+        if (length(keyframes) > 1)
+          percentage = (100 / ( ( length(keyframes) - 1) / n) ) * 1%
+
+        // otherwise - set to 0
+        else
+          percentage = 0%
+
+      // create percentage
+      {percentage}
+
+        // define transform hash
+        transformProps = {}
+
+        // define filter hash
+        filterProps = {}
+
+        // loop through keyframe props
+        for prop, n in keyframe
+
+          // parse prop value
+          propCheck = join(', ', prop)
+
+          // check if prop value starts with a number
+          isPercentage = false
+          if ( match('^\d', propCheck) )
+            isPercentage = true
+
+          // check if prop value contains transform
+          isTransform = false
+          if ( match('^translate|^rotate|^scale|^skew ', propCheck) )
+            isTransform = true
+
+          // check if prop value contains filter
+          isFilter = false
+          if ( match('blur|brightness|contrast|drop-shadow|grayscale|hue-rotate|invert|saturate|sepia', propCheck) )
+            isFilter = true
+
+          // check if prop value contains easing
+          isEasing = false
+          if ( match('ease|cubic-bezier', propCheck) )
+            isEasing = true
+
+          // append prop to transform hash (if transform)
+          if ( isTransform )
+            transformProps[n] = prop
+          else
+            transformProps[n] = unquote('')
+
+          // append prop to transform hash (if transform)
+          if ( isFilter )
+            filterProps[n] = prop
+          else
+            filterProps[n] = unquote('')
+
+          // add timing function (if easing)
+          if ( isEasing )
+            animation-timing-function prop
+
+          // add prop if none of the above (else condition escaping percentage)
+          if ( !isPercentage && !isTransform && !isFilter && !isEasing )
+
+            // split prop and value
+            regularProp = split('(', '' + prop)
+            regularValue = split(')', '' + regularProp[1])
+
+            // unquote
+            printProp = unquote(regularProp[0])
+            printValue = unquote(regularValue[0])
+
+            // add
+            {printProp} printValue
+
+        // add transform props
+        if ( transformAvailable )
+          transform transformProps
+
+        // add filter props
+        if ( filterAvailable )
+          filter filterProps

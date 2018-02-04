@@ -1,0 +1,62 @@
+/**
+ * Media (media.styl)
+ * ------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides variables for common @media
+ *         rules. Breakpoints are configurable
+ *         through config file.
+ *
+ * @syntax
+ *   @media <definition>
+ *
+ * @examples
+ *   @media large
+ *   @media medium
+ *   @media tablet
+ *   @media mobile
+ */
+
+scr = 'only screen and'
+
+// small
+small = (mobile-breakpoint - 1)
+small = join('', 'max-width:', small)
+small = add-braces(small)
+small = join(' ', scr, small)
+small = unquote(small)
+
+// medium
+medium = (tablet-breakpoint - 1)
+medium = join('', 'max-width:', medium)
+medium = add-braces(medium)
+medium = join(' ', scr, medium)
+medium = unquote(medium)
+
+// large
+large = tablet-breakpoint
+large = join('', 'min-width:', large)
+large = add-braces(large)
+large = join(' ', scr, large)
+large = unquote(large)
+
+// mobile
+mobile = (mobile-breakpoint - 1)
+mobile = join('', 'max-device-width:', mobile)
+mobile = add-braces(mobile)
+mobile = join(' ', scr, mobile)
+mobile = unquote(mobile)
+
+// tablet
+tablet = (tablet-breakpoint - 1)
+tablet = join('', 'max-device-width:', tablet)
+tablet = add-braces(tablet)
+tablet = join(' ', scr, tablet)
+tablet = unquote(tablet)
+
+// desktop
+desktop = tablet-breakpoint
+desktop = join('', 'min-device-width:', desktop)
+desktop = add-braces(desktop)
+desktop = join(' ', scr, desktop)
+desktop = unquote(desktop)

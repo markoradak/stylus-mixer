@@ -1,0 +1,140 @@
+/**
+ * Unsplash (unsplash.styl)
+ * ------------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides mixin that creates background
+ *         with unsplash.it url random image.
+ *
+ *         Aside from that, it accepts standard
+ *         shorthand background syntax + two extra
+ *         options - cover and contain.
+ *
+ *         It sets position center and size cover
+ *         as default, if no other option is provided.
+ *
+ * @syntax
+ *   unsplash([n] ?[n], <options>, <background-options>)
+ *
+ * @examples
+ *   unsplash(500)
+ *   unsplash(1920 1080, grayscale, top left)
+ *   unsplash(2000, blur)
+ *   unsplash(3000 1000, blur grayscale)
+ *   unsplash(20, repeat)
+ */
+
+unsplash(size, options...)
+
+  // create options string
+  $optionsCheck = create-string(options)
+
+  // assign all arguments to size,
+  // if options doesn't exist
+  if (length(arguments) > 1 && !match('grayscale|blur|cache|cover|contain|fixed|center|repeat|no-repeat|repeat-x|repeat-y|top|right|bottom|left', $optionsCheck))
+    size = arguments
+    options = unquote('')
+
+  // set different width and height
+  // if two values are provided
+  if (length(size) > 1)
+    $width  = size[0]
+    $height = size[1]
+
+  // set the same width and height
+  // if one value is provided
+  else if (length(size) == 1)
+    $width  = size
+    $height = size
+
+  // throw error otherwise
+  else
+    error("Unsplash function supports up to 2 values as size.")
+
+  // set grayscale and blur variables
+  // to empty values
+  $grayscale = unquote('')
+  $blur = unquote('')
+  $query = '?random='
+
+  // if options exist
+  if (options)
+
+    // create options string and
+    // remove all comma separators
+    $options = create-string(options)
+    $options = replace(',', '', $options)
+
+    // set grayscale as path, if defined
+    if (match('grayscale', $optionsCheck))
+      $grayscale = 'g/'
+      $options = replace('grayscale', '', $options)
+      $options = replace('color', '', $options)
+
+    // set blur as query string, if defined
+    if (match('blur', $optionsCheck))
+      $blur = '&blur'
+      $options = replace('blur', '', $options)
+
+    // remove 'cache' if available
+    // and set query to image
+    // if (match('cache', $optionsCheck))
+    //   $query = '?image='
+    //   $options = replace('cache', '', $options)
+
+    // remove 'cover' if available,
+    // and set it's variable to true
+    if (match('cover', $optionsCheck))
+      $cover = true
+      $options = replace('cover', '', $options)
+
+    // remove 'contain' if available,
+    // and set it's variable to true
+    if (match('contain', $optionsCheck))
+      $contain = true
+      $options = replace('contain', '', $options)
+
+    // fix 'fixed' property
+    if (match('fixed', $optionsCheck))
+      $options = replace('fixed', 'unquote(fixed)', $options)
+
+    // if no background options are provided
+    // set defaults - size cover, position center
+    if (!match('cover|contain|fixed|center|repeat|no-repeat|repeat-x|repeat-y|top|right|bottom|left', $optionsCheck))
+      $cover = true
+      $options = 'center'
+
+  // if no options are available set defaults
+  // size cover, position center
+  else
+    $options = 'center'
+    $cover = true
+
+  // remove unnecesary whitespace
+  $options = create-string($options)
+
+  // create prop from remaining options
+  $options = create-val($options)
+
+  // get random number id
+  $id = random(0,900)
+
+  // create background url
+  $url = add-quotes('https://unsplash.it/', $grayscale, $width, '/', $height, $query, $id, $blur)
+  $url = create-val('url(',$url,')')
+
+  // join background url and options,
+  // and create prop from it
+  $value = create-block('', $url, $options)
+  $value = create-val($value)
+
+  // print value
+  background $value
+
+  // print 'cover' if true
+  if ($cover == true)
+    background-size cover
+
+  // print 'contain' if true
+  if ($contain == true)
+    background-size contain

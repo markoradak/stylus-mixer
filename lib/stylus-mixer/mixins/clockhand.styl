@@ -1,0 +1,48 @@
+/**
+ * Clockhand (clockhand.styl)
+ * --------------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides shorthand syntax for
+ *         top, bottom, left, right properties.
+ *         Aliased with 'trbl' and 'tblr'.
+ *
+ * @syntax
+ *   <clockhand> [n] ...(4)
+ *
+ * @examples
+ *   clockhand 0
+ *   clockhand 0 10px
+ *   clockhand 0 10px 0
+ *   clockhand 0 10px 0 10px
+ */
+
+clockhand()
+
+  // perform check
+  if length(arguments) > 4
+    error("Clockhand property support up to 4 values at a time.")
+
+  // define props
+  sides = top, right, bottom, left
+
+  // itterate
+  for side, n in sides
+    // (top,right,bottom,left)
+    if length(arguments) == 1
+      {side} arguments
+    // (top,bottom), (left,right)
+    else if length(arguments) == 2
+      {side} arguments[0] if n == 0 || n == 2 unless arguments[0] == '_'
+      {side} arguments[1] if n == 1 || n == 3 unless arguments[1] == '_'
+    // top, (left,right), bottom
+    else if length(arguments) == 3
+      {side} arguments[0] if n == 0 unless arguments[0] == '_'
+      {side} arguments[1] if n == 1 || n == 3 unless arguments[1] == '_'
+      {side} arguments[2] if n == 2 unless arguments[2] == '_'
+    // top, bottom, left, right
+    else
+      {side} arguments[n] unless arguments[n] == '_'
+
+// aliases
+trbl = tblr = clockhand

@@ -1,15 +1,12 @@
 {
 
   "autoPrefixer": true,
-  "browsers": "> 0%",
-
-  "autoImportant": false,
+  "browsers": "> 1%",
 
   "autoReset": false,
   "autoNormalize": false,
 
-  "tabletBreakpoint": "1024px",
-  "mobileBreakpoint": "768px",
+  "autoImportant": false,
 
   "overwriteColors": false
 

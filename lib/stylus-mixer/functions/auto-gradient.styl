@@ -1,0 +1,19 @@
+auto-gradient($type, $direction, $color, $strength, $spin...)
+  $cA = blend-colors($color, #000, overlay, $strength)
+  $cB = blend-colors($color, #FFF, overlay, $strength)
+
+  if ($spin)
+    $cB = blend-colors($cB, spin($color, $spin), overlay, $strength)
+
+  if ($type == 'radial')
+    $colorA = $cB
+    $colorB = $cA
+  else
+    $colorA = $cA
+    $colorB = $cB
+
+
+  $direction = join(' ', $direction)
+  $props = join(', ', $direction, $colorA, $colorB)
+
+  return $type + '-gradient(' + $props + ')'

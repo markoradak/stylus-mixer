@@ -1,3 +1,20 @@
+/**
+ * Auto Gradient (auto-gradient.styl)
+ * ----------------------------------
+ * @author Marko Radak <mail@markoradak.com>
+ * @since  0.1.0
+ * @desc   Provides function that automatically
+ *         creates gradient based on the
+ *         given color.
+ *
+ * @syntax
+ *   auto-gradient(<type>, <direction>, <color>, <strength>, ?<spin>)
+ *
+ * @examples
+ *   auto-gradient(linear, to right, $yellow, 50%)
+ *   auto-gradient(radial, circle at center, $green, 50%, 20deg)
+ */
+
 auto-gradient($type, $direction, $color, $strength, $spin...)
   $cA = blend-colors($color, #000, overlay, $strength)
   $cB = blend-colors($color, #FFF, overlay, $strength)

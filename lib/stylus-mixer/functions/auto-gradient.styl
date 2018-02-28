@@ -16,12 +16,16 @@
  */
 
 auto-gradient($type, $direction, $color, $strength, $spin...)
+
+  // blend darker and lighter colors
   $cA = blend-colors($color, #000, overlay, $strength)
   $cB = blend-colors($color, #FFF, overlay, $strength)
 
+  // add spin if specified
   if ($spin)
     $cB = blend-colors($cB, spin($color, $spin), overlay, $strength)
 
+  // invert colors if radial
   if ($type == 'radial')
     $colorA = $cB
     $colorB = $cA
@@ -29,8 +33,11 @@ auto-gradient($type, $direction, $color, $strength, $spin...)
     $colorA = $cA
     $colorB = $cB
 
-
+  // create string from direction
   $direction = join(' ', $direction)
+
+  // create props
   $props = join(', ', $direction, $colorA, $colorB)
 
-  return $type + '-gradient(' + $props + ')'
+  // return
+  $type + '-gradient(' + $props + ')'

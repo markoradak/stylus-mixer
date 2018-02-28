@@ -6,6 +6,7 @@
  * @desc   Provides function that blends
  *         two given colors using one of the
  *         available blend modes.
+ * @note   Idea borrowed from @pdaoust.
  *
  * @syntax
  *   blend-colors(<color>, <color>, <mode>, ?<amount>)
@@ -17,97 +18,89 @@
 
 blend-colors(color1, color2, mode = normal, amount = 0.5)
 
-  // function for clipping a calculated to within the 0 - 1 range
-  clipcolor(color) {
-    if color < 0 {
-      0;
-    }
-    if color > 1 {
-      1;
-    }
-    color;
-  }
+  // helper function for clipping a calculated color to 0 - 1 range
+  clipcolor(color)
+    if (color < 0)
+      0
+    else if (color > 1)
+      1
+    else
+      color
 
-  // commonly used calculation - for calculating a premultiplied color with
-  // its complementary alpha
-  comp(color, alpha) {
-    color * (1 - alpha);
-  }
+  // helper function for calculating a premultiplied
+  // color with its complementary alpha
+  comp(color, alpha)
+    color * (1 - alpha)
 
-  // blending mode calculations
-  normal(color1a, color2a, alpha1, alpha2) {
-    color2a + comp(color1a, alpha2);
-  }
-  darken(color1a, color2a, alpha1, alpha2) {
-    min(color2a * alpha1, color1a * alpha2) + comp(color2a, alpha1) + comp(color1a, alpha2);
-  }
-  multiply(color1a, color2a, alpha1, alpha2) {
-    color2a * color1a + comp(color2a, alpha1) + comp(color1a, alpha2);
-  }
-  lighten(color1a, color2a, alpha1, alpha2) {
-    max(color2a * alpha1, color1a * alpha2) + comp(color2a, alpha1) + comp(color1a, alpha2);
-  }
-  screen(color1a, color2a, alpha1, alpha2) {
-    color2a + color1a - color2a * color1a;
-  }
-  overlay(color1a, color2a, alpha1, alpha2) {
-    if color1a * 2 <= alpha1 {
-      color2a * color1a * 2 + comp(color2a, alpha1) + comp(color1a, alpha2);
-    } else {
-      comp(color2a, alpha1) + comp(color1a, alpha2) - 2 * (alpha1 - color1a) * (alpha2 - color2a) +  alpha2 * alpha1;
-    }
-  }
+  // blending mode calculations …
+
+  normal(color1a, color2a, alpha1, alpha2)
+    color2a + comp(color1a, alpha2)
+
+  darken(color1a, color2a, alpha1, alpha2)
+    min(color2a * alpha1, color1a * alpha2) + comp(color2a, alpha1) + comp(color1a, alpha2)
+
+  multiply(color1a, color2a, alpha1, alpha2)
+    color2a * color1a + comp(color2a, alpha1) + comp(color1a, alpha2)
+
+  lighten(color1a, color2a, alpha1, alpha2)
+    max(color2a * alpha1, color1a * alpha2) + comp(color2a, alpha1) + comp(color1a, alpha2)
+
+  screen(color1a, color2a, alpha1, alpha2)
+    color2a + color1a - color2a * color1a
+
+  overlay(color1a, color2a, alpha1, alpha2)
+    if (color1a * 2 <= alpha1)
+      color2a * color1a * 2 + comp(color2a, alpha1) + comp(color1a, alpha2)
+    else
+      comp(color2a, alpha1) + comp(color1a, alpha2) - 2 * (alpha1 - color1a) * (alpha2 - color2a) +  alpha2 * alpha1
 
   // get 8-bit color values and convert to floats
-  red1 = (red(color1) / 255);
-  green1 = (green(color1) / 255);
-  blue1 = (blue(color1) / 255);
-  alpha1 = alpha(color1);
-  red2 = (red(color2) / 255);
-  green2 = (green(color2) / 255);
-  blue2 = (blue(color2) / 255);
-  alpha2 = alpha(color2);
+  red1 = (red(color1) / 255)
+  green1 = (green(color1) / 255)
+  blue1 = (blue(color1) / 255)
+  alpha1 = alpha(color1)
+  red2 = (red(color2) / 255)
+  green2 = (green(color2) / 255)
+  blue2 = (blue(color2) / 255)
+  alpha2 = alpha(color2)
 
-  // if a percentage was given as an amount, convert to float
-  if amount {
-    if unit(amount) == '%' {
-      amount = unit(amount / 100, '');
-    }
-  }
+  // convert amount to float if percentage
+  if (amount)
+    if (unit(amount) == '%')
+      amount = unit(amount / 100, '')
 
-  // amount adjusts alpha2 and then is no longer used. If you're familiar with
-  // SVG spec, think of amount as opacity.
-  alpha2 = amount * alpha2;
+  // adjust alpha2 with an amount
+  alpha2 = amount * alpha2
 
-  // calculate final alpha, which is the same for any blending mode
-  alpha3 = alpha1 + alpha2 - alpha1 * alpha2;
+  // calculate final alpha
+  alpha3 = alpha1 + alpha2 - alpha1 * alpha2
 
-  // premultiply RGB values for each color, cf. Porter/Duff
-  red1a = red1 * alpha1;
-  green1a = green1 * alpha1;
-  blue1a = blue1 * alpha1;
-  red2a = red2 * alpha2;
-  green2a = green2 * alpha2;
-  blue2a = blue2 * alpha2;
+  // premultiply RGB values for each color
+  red1a = red1 * alpha1
+  green1a = green1 * alpha1
+  blue1a = blue1 * alpha1
+  red2a = red2 * alpha2
+  green2a = green2 * alpha2
+  blue2a = blue2 * alpha2
 
-  // each blending mode takes the premultiplied RGB values, performs the
-  // blending operation, resulting in a premultiplied final value.
-  blendfunc = normal;
-  blendfunc = darken if mode == darken;
-  blendfunc = multiply if mode == multiply;
-  blendfunc = lighten if mode == lighten;
-  blendfunc = screen if mode == screen;
-  blendfunc = overlay if mode == overlay;
+  // define blending function
+  blendfunc = normal
+  blendfunc = darken if mode == darken
+  blendfunc = multiply if mode == multiply
+  blendfunc = lighten if mode == lighten
+  blendfunc = screen if mode == screen
+  blendfunc = overlay if mode == overlay
 
   // calculate the new colors
-  red3a = blendfunc(red1a, red2a, alpha1, alpha2);
-  green3a = blendfunc(green1a, green2a, alpha1, alpha2);
-  blue3a = blendfunc(blue1a, blue2a, alpha1, alpha2);
+  red3a = blendfunc(red1a, red2a, alpha1, alpha2)
+  green3a = blendfunc(green1a, green2a, alpha1, alpha2)
+  blue3a = blendfunc(blue1a, blue2a, alpha1, alpha2)
 
-  // take premultiplied RGB values for final color and derive actual colors
-  // by un-multiplying them by the final alpha. Then clip each.
-  red3 = clipcolor(red3a / alpha3);
-  green3 = clipcolor(green3a / alpha3);
-  blue3 = clipcolor(blue3a / alpha3);
+  // take premultiplied RGB values for final color and derive actual
+  // colors by un-multiplying them by the final alpha and clip each
+  red3 = clipcolor(red3a / alpha3)
+  green3 = clipcolor(green3a / alpha3)
+  blue3 = clipcolor(blue3a / alpha3)
 
-  rgba(round(red3 * 255), round(green3 * 255), round(blue3 * 255), alpha3);
+  rgba(round(red3 * 255), round(green3 * 255), round(blue3 * 255), alpha3)

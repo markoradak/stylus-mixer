@@ -17,13 +17,13 @@
 @require '../fonts/fontawesome'
 @require '../fonts/ionicons'
 
-load-font()
+load-font(arguments)
 
-  if (arguments = 'font-awesome' || arguments = 'fontawesome')
+  if (arguments == 'font-awesome' || arguments == 'fontawesome')
     $path = $stylusMixerPath + '/fonts/fontawesome/fontawesome-webfont'
     font-face('FontAwesome', $path, formats: eot woff woff2 ttf)
 
-  else if (arguments = 'ionicons')
+  else if (arguments == 'ionicons')
     $path = $stylusMixerPath + '/fonts/ionicons/ionicons'
     font-face('Ionicons', $path, formats: eot woff ttf)
 
